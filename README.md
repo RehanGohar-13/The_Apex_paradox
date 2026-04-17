@@ -1,7 +1,9 @@
-# Title: [The Apex Dilemma]
+# Title: The Apex Dilemma
+
+> "The spiral never returns to its center."
 
 ## Author
-[I]
+I
 
 ## Date Created
 [12:00 of 4th March, 2026]
