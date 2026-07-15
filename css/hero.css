@@ -1,0 +1,252 @@
+/* ============================================
+   HERO.CSS
+   Purpose: Hero section and scroll indicator
+   Dependencies: base.css, animations.css
+   Affects: #hero, .hero-content, .scroll-indicator
+   ============================================ */
+
+/* --- HERO WRAPPER --- */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Dark vignette over the spiral canvas */
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    var(--abyss) 80%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* --- HERO CONTENT WRAPPER --- */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 1.5rem;
+}
+
+/* --- AUTHOR LABEL --- */
+.hero-subtitle-top {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--glow);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.5s forwards;
+}
+
+/* --- MAIN TITLE --- */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 900;
+  color: var(--bone);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation:
+    fadeInUp 1s 0.8s forwards,
+    glitchColor 10s 3s infinite;
+}
+
+/* Red accent line of the title */
+.hero-title .accent {
+  color: var(--glow);
+  display: block;
+  text-shadow: var(--glow-text-shadow);
+}
+
+/* --- TAGLINE --- */
+/* This will be replaced by typewriter effect later */
+.hero-tagline {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--pale);
+  font-style: italic;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: fadeInUp 1s 1.1s forwards;
+  margin-bottom: 2rem;
+  min-height: 2rem;
+}
+
+.hero-tagline::before {
+  content: "\201C";
+  color: var(--glow);
+  font-size: 1.5rem;
+}
+
+.hero-tagline::after {
+  content: "\201D";
+  color: var(--glow);
+  font-size: 1.5rem;
+}
+
+/* When typewriter is active we remove the quotes
+   from CSS and handle them in JS */
+.hero-tagline.typewriter-mode::before,
+.hero-tagline.typewriter-mode::after {
+  content: none;
+}
+
+/* --- META INFO (date / author) --- */
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--rust);
+  letter-spacing: 3px;
+  opacity: 0;
+  animation: fadeInUp 1s 1.4s forwards;
+}
+
+/* --- SCROLL INDICATOR --- */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0;
+  animation: fadeInUp 1s 2s forwards;
+}
+
+.scroll-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--rust);
+  text-transform: uppercase;
+  position: relative;
+  animation: labelGlitch 6s infinite;
+}
+
+/* Ghost duplicates of the label that flash occasionally */
+.scroll-label::before,
+.scroll-label::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.scroll-label::before {
+  color: var(--glow);
+  animation: ghostLeft 6s infinite;
+}
+
+.scroll-label::after {
+  color: #0044ff;
+  animation: ghostRight 6s infinite;
+}
+
+/* Main chevron container */
+.scroll-chevrons {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The primary chevron */
+.chevron-main {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  color: var(--glow);
+  position: absolute;
+  animation:
+    chevronDrift 3s infinite ease-in-out,
+    chevronFlicker 8s infinite;
+  text-shadow: 0 0 8px rgba(255, 34, 0, 0.6);
+  user-select: none;
+}
+
+/* Ghost duplicates that appear and scatter */
+.chevron-ghost {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  position: absolute;
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.chevron-ghost:nth-child(2) {
+  color: var(--glow);
+  animation: ghostChevron1 4s infinite;
+}
+
+.chevron-ghost:nth-child(3) {
+  color: #ff0000;
+  animation: ghostChevron2 5s infinite;
+}
+
+.chevron-ghost:nth-child(4) {
+  color: #0044ff;
+  animation: ghostChevron3 6s infinite;
+}
+
+.chevron-ghost:nth-child(5) {
+  color: var(--glow);
+  animation: ghostChevron4 7s infinite;
+}
+
+/* Scan line that passes over the indicator */
+.scroll-scanline {
+  position: absolute;
+  width: 60px;
+  height: 1px;
+  background: var(--glow);
+  opacity: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scanPass 4s infinite;
+  pointer-events: none;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .hero-tagline {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    letter-spacing: 2px;
+  }
+
+  .hero-subtitle-top {
+    letter-spacing: 4px;
+    font-size: 0.75rem;
+  }
+}

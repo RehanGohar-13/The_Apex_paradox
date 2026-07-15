@@ -1,0 +1,582 @@
+/* ============================================
+   SECTIONS.CSS
+   Purpose: All main content sections layout and typography
+   Dependencies: base.css, animations.css
+   Affects: .section, section titles, paragraphs,
+            timeline, comparison, questions
+   ============================================ */
+
+/* --- SECTION WRAPPER --- */
+/* Shared container for all content sections */
+.section {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--section-padding);
+}
+
+/* --- SECTION NUMBER LABEL --- */
+/* Small mono label above title e.g. "Section I" */
+.section-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--glow);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
+/* --- SECTION TITLE --- */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--bone);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Glowing underline accent */
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--glow);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+/* --- SECTION PARAGRAPHS --- */
+.section p {
+  font-size: 1.1rem;
+  line-height: 2;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  color: var(--pale);
+}
+
+.section p strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+/* Last paragraph in a section needs no bottom margin */
+.section p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- SECTION DIVIDER --- */
+/* The horizontal line with diamond between sections */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blood), transparent);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Diamond icon in the center of the divider */
+.section-divider::before {
+  content: "◆";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--glow);
+  font-size: 0.8rem;
+  background: var(--abyss);
+  padding: 0 1rem;
+}
+
+/* --- SPIRAL VISUAL --- */
+/* SVG spiral container inside description section */
+.spiral-visual {
+  text-align: center;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.spiral-visual svg {
+  max-width: 350px;
+  width: 100%;
+  height: auto;
+}
+
+/* The spiral path draws itself when .visible is added */
+.spiral-path {
+  fill: none;
+  stroke: var(--glow);
+  stroke-width: 1.5;
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  filter: drop-shadow(0 0 4px rgba(255, 34, 0, 0.5));
+  transition: stroke-dashoffset 3s ease;
+}
+
+.spiral-visual.visible .spiral-path {
+  stroke-dashoffset: 0;
+}
+
+.spiral-caption {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--rust);
+  letter-spacing: 4px;
+  margin-top: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* --- TIMELINE --- */
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+  margin: 2rem 0;
+}
+
+/* Vertical glowing line */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--blood), var(--glow), var(--blood));
+}
+
+/* Each timeline entry */
+.timeline-item {
+  padding-left: 50px;
+  margin-bottom: 2.5rem;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition:
+    opacity var(--transition-med),
+    transform var(--transition-med);
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Visible state triggered by scroll observer */
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Dot on the timeline line */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 8px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--glow);
+  border-radius: 50%;
+  background: var(--abyss);
+  box-shadow: 0 0 8px rgba(255, 34, 0, 0.4);
+}
+
+/* Small label above timeline text e.g. "Origin" */
+.timeline-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--glow);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.timeline-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--pale);
+}
+
+/* --- COMPARISON GRID --- */
+/* Order vs Chaos two column layout */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+/* Shared card styles */
+.comparison-card {
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.comparison-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Order card — steel / neutral */
+.comparison-card.order {
+  background: linear-gradient(
+    135deg,
+    rgba(42, 42, 53, 0.6),
+    rgba(42, 42, 53, 0.2)
+  );
+  border: 1px solid rgba(200, 184, 168, 0.15);
+}
+
+.comparison-card.order:hover {
+  box-shadow: 0 8px 30px rgba(200, 184, 168, 0.08);
+}
+
+/* Chaos card — blood / red */
+.comparison-card.chaos {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 26, 26, 0.6),
+    rgba(74, 26, 26, 0.2)
+  );
+  border: 1px solid rgba(255, 34, 0, 0.2);
+}
+
+.comparison-card.chaos:hover {
+  box-shadow: 0 8px 30px rgba(255, 34, 0, 0.1);
+}
+
+.comparison-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.comparison-card.order h3 {
+  color: var(--pale);
+}
+.comparison-card.chaos h3 {
+  color: var(--glow);
+}
+
+.comparison-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.comparison-card ul li {
+  font-size: 0.95rem;
+  padding-left: 1.2rem;
+  position: relative;
+  line-height: 1.6;
+  color: var(--pale);
+}
+
+.comparison-card.order ul li::before {
+  content: "▪";
+  position: absolute;
+  left: 0;
+  color: var(--pale);
+}
+
+.comparison-card.chaos ul li::before {
+  content: "▪";
+  position: absolute;
+  left: 0;
+  color: var(--glow);
+}
+
+/* --- QUESTIONS SECTION --- */
+.question-item {
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+}
+
+.question-item:last-child {
+  border-bottom: none;
+}
+
+/* Question text with large ? prefix */
+.question-text {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--bone);
+  font-weight: 400;
+  line-height: 1.8;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.question-text::before {
+  content: "?";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--glow);
+  font-weight: 900;
+}
+
+/* Small status label below question */
+.question-sub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--rust);
+  margin-top: 0.8rem;
+  padding-left: 2rem;
+  letter-spacing: 1px;
+}
+
+/* --- FOOTER --- */
+footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 4rem 2rem;
+  border-top: 1px solid rgba(139, 0, 0, 0.2);
+}
+
+.footer-spiral {
+  font-size: 2rem;
+  color: var(--glow);
+  margin-bottom: 1rem;
+  animation: spin 20s linear infinite;
+  display: inline-block;
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--rust);
+  letter-spacing: 3px;
+}
+
+.footer-quote {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--pale);
+  font-style: italic;
+  margin-top: 1rem;
+  opacity: 0.6;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .section {
+    padding: var(--section-padding-mob);
+  }
+
+  .comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-card {
+    padding: 1.5rem;
+  }
+
+  .apex-scale {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 3rem 0 6rem 0;
+  }
+
+  .scale-point {
+    flex: 0 0 calc(25% - 0.5rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .scale-line {
+    display: none;
+  }
+
+  .scale-info {
+    position: relative;
+    bottom: auto;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    letter-spacing: 2px;
+  }
+
+  .question-text {
+    font-size: 1rem;
+  }
+}
+
+/* --- APEX SCALE --- */
+.apex-scale {
+  position: relative;
+  padding: 4rem 0 6rem 0;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+/* The horizontal connecting line */
+.scale-line {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(139, 0, 0, 0.2);
+  z-index: 0;
+}
+
+.scale-line-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--pale), var(--blood), var(--glow));
+  box-shadow: 0 0 8px rgba(255, 34, 0, 0.3);
+  transition: width 1.5s ease;
+}
+
+.apex-scale.visible .scale-line-fill {
+  width: 100%;
+}
+
+/* Individual scale point */
+.scale-point {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+  transition: transform var(--transition-fast);
+}
+
+.scale-point:hover {
+  transform: translateY(-4px);
+}
+
+/* The dot */
+.scale-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--steel);
+  border: 2px solid var(--pale);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+  position: relative;
+  z-index: 2;
+}
+
+.scale-point:hover .scale-dot {
+  background: var(--glow);
+  border-color: var(--glow);
+  box-shadow:
+    0 0 12px var(--glow),
+    0 0 25px rgba(255, 34, 0, 0.3);
+  transform: scale(1.4);
+}
+
+/* Chaos points have red styling by default */
+.scale-point.chaos-point .scale-dot {
+  border-color: var(--blood);
+}
+
+.scale-point.chaos-point:hover .scale-dot {
+  background: var(--glow);
+  border-color: var(--glow);
+  box-shadow:
+    0 0 15px var(--glow),
+    0 0 30px rgba(255, 34, 0, 0.4);
+}
+
+/* Final ??? point pulses */
+.scale-point.final-point .scale-dot {
+  animation: pulse 3s infinite;
+  border-color: var(--glow);
+  background: rgba(255, 34, 0, 0.2);
+}
+
+/* The label below the dot */
+.scale-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-top: 0.8rem;
+  text-align: center;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.scale-point:hover .scale-label {
+  color: var(--glow);
+}
+
+.scale-point.chaos-point .scale-label {
+  color: var(--blood);
+}
+
+.scale-point.chaos-point:hover .scale-label {
+  color: var(--glow);
+}
+
+/* Info display box */
+.scale-info {
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  right: 0;
+  padding: 1.2rem 1.5rem;
+  background: rgba(10, 10, 15, 0.9);
+  border: 1px solid rgba(139, 0, 0, 0.2);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.scale-info.active {
+  border-color: rgba(255, 34, 0, 0.4);
+  box-shadow: 0 0 15px rgba(255, 34, 0, 0.08);
+}
+
+.scale-info-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--rust);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.scale-info p {
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  color: var(--pale) !important;
+  margin: 0 !important;
+  transition: color var(--transition-fast);
+}
+
+.scale-info.active p {
+  color: var(--bone) !important;
+}

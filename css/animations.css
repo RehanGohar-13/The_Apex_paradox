@@ -1,0 +1,416 @@
+/* ============================================
+   ANIMATIONS.CSS
+   Purpose: All keyframes and transition animations
+   Dependencies: base.css
+   Used by: hero.css, sections.css, components.css
+   ============================================ */
+
+/* --- FADE IN UP --- */
+/* Used on hero elements and section reveals */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- GLITCH TRANSFORM --- */
+/* Used on hero title — subtle positional glitch */
+@keyframes glitch {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+  }
+  92% {
+    transform: translate(-2px, 1px);
+  }
+  94% {
+    transform: translate(2px, -1px);
+  }
+  96% {
+    transform: translate(-1px, -2px);
+  }
+  98% {
+    transform: translate(1px, 2px);
+  }
+}
+
+/* --- GLITCH COLOR --- */
+/* Used on hero title — red/blue channel split */
+@keyframes glitchColor {
+  0%,
+  90%,
+  100% {
+    text-shadow: none;
+  }
+  93% {
+    text-shadow:
+      -2px 0 #ff0000,
+      2px 0 #0000ff;
+  }
+  96% {
+    text-shadow:
+      2px 0 #ff0000,
+      -2px 0 #0000ff;
+  }
+}
+
+/* --- BOUNCE --- */
+/* Used on scroll indicator arrow */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: rotate(45deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(45deg) translateY(8px);
+    opacity: 0.3;
+  }
+}
+
+/* --- SPIN --- */
+/* Used on footer spiral icon */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- DRIFT --- */
+/* Used on floating background particles */
+@keyframes drift {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-80px) scale(2);
+  }
+}
+
+/* --- PULSE --- */
+/* Used on spiral center dot and glow elements */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.5);
+  }
+}
+
+/* --- REVEAL --- */
+/* Base state for scroll-triggered reveals */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delay helpers */
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+.reveal-delay-5 {
+  transition-delay: 0.5s;
+}
+
+/* --- TYPEWRITER CURSOR --- */
+/* Blinking cursor for typewriter effect */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--glow);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 1s infinite;
+}
+
+/* --- LOADING BAR FILL --- */
+@keyframes loadFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* --- FLICKER --- */
+/* Used on loading screen text */
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0;
+  }
+  97% {
+    opacity: 1;
+  }
+}
+
+/* --- CURSOR TRAIL FADE --- */
+@keyframes trailFade {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* --- SCROLL INDICATOR GLITCH SYSTEM --- */
+
+/* Label text subtle positional glitch */
+@keyframes labelGlitch {
+  0%,
+  88%,
+  100% {
+    transform: translate(0, 0);
+  }
+  89% {
+    transform: translate(-2px, 0);
+  }
+  90% {
+    transform: translate(3px, 1px);
+  }
+  91% {
+    transform: translate(-1px, -1px);
+  }
+  92% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Red ghost of label drifts left */
+@keyframes ghostLeft {
+  0%,
+  87%,
+  93%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  89% {
+    opacity: 0.7;
+    transform: translateX(-4px);
+  }
+  91% {
+    opacity: 0.4;
+    transform: translateX(-6px);
+  }
+}
+
+/* Blue ghost of label drifts right */
+@keyframes ghostRight {
+  0%,
+  87%,
+  93%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  89% {
+    opacity: 0.5;
+    transform: translateX(5px);
+  }
+  91% {
+    opacity: 0.3;
+    transform: translateX(7px);
+  }
+}
+
+/* Main chevron drifts up and down gently */
+@keyframes chevronDrift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Main chevron flickers occasionally */
+@keyframes chevronFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  83% {
+    opacity: 0;
+  }
+  84% {
+    opacity: 1;
+  }
+  84.5% {
+    opacity: 0;
+  }
+  85% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 1;
+  }
+  93.5% {
+    opacity: 0.2;
+  }
+  94% {
+    opacity: 1;
+  }
+}
+
+/* Ghost chevron 1 — appears top-left briefly */
+@keyframes ghostChevron1 {
+  0%,
+  74%,
+  82%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  76% {
+    opacity: 0.6;
+    transform: translate(-8px, -4px);
+  }
+  79% {
+    opacity: 0.3;
+    transform: translate(-12px, -6px);
+  }
+}
+
+/* Ghost chevron 2 — appears right briefly */
+@keyframes ghostChevron2 {
+  0%,
+  60%,
+  68%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  63% {
+    opacity: 0.5;
+    transform: translate(10px, 2px);
+  }
+  66% {
+    opacity: 0.2;
+    transform: translate(14px, 4px);
+  }
+}
+
+/* Ghost chevron 3 — appears bottom briefly */
+@keyframes ghostChevron3 {
+  0%,
+  45%,
+  53%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  48% {
+    opacity: 0.4;
+    transform: translate(3px, 10px);
+  }
+  51% {
+    opacity: 0.15;
+    transform: translate(5px, 15px);
+  }
+}
+
+/* Ghost chevron 4 — appears top briefly */
+@keyframes ghostChevron4 {
+  0%,
+  30%,
+  38%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  33% {
+    opacity: 0.5;
+    transform: translate(-5px, -10px);
+  }
+  36% {
+    opacity: 0.2;
+    transform: translate(-8px, -14px) scale(0.8);
+  }
+}
+
+/* Horizontal scan line that passes through */
+@keyframes scanPass {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+    top: 0%;
+  }
+  75% {
+    opacity: 0.4;
+    top: 10%;
+  }
+  85% {
+    opacity: 0.6;
+    top: 90%;
+  }
+  90% {
+    opacity: 0;
+    top: 100%;
+  }
+}

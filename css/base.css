@@ -1,0 +1,110 @@
+/* ============================================
+   BASE.CSS
+   Purpose: Variables, reset, fonts, body, scrollbar
+   Dependencies: None — this loads first
+   Used by: All other CSS files
+   ============================================ */
+
+/* --- GOOGLE FONTS IMPORT --- */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+/* --- DESIGN TOKENS / VARIABLES --- */
+/* Change a value here and it updates everywhere in the site */
+:root {
+  /* Colors */
+  --blood: #8b0000;
+  --abyss: #0a0a0f;
+  --steel: #2a2a35;
+  --flesh: #4a1a1a;
+  --glow: #ff2200;
+  --pale: #c8b8a8;
+  --bone: #e8ddd0;
+  --rust: #6b3030;
+
+  /* Typography */
+  --font-display: "Cinzel", serif;
+  --font-body: "Rajdhani", sans-serif;
+  --font-mono: "Share Tech Mono", monospace;
+
+  /* Spacing */
+  --section-padding: 6rem 2rem;
+  --section-padding-mob: 4rem 1.5rem;
+  --max-width: 900px;
+
+  /* Transitions */
+  --transition-fast: 0.3s ease;
+  --transition-med: 0.6s ease;
+  --transition-slow: 0.8s ease;
+
+  /* Glow Effects */
+  --glow-shadow: 0 0 10px var(--glow), 0 0 20px rgba(255, 34, 0, 0.3);
+  --glow-text-shadow: 0 0 40px rgba(255, 34, 0, 0.4);
+}
+
+/* --- RESET --- */
+/* Remove all default browser spacing and sizing quirks */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- BASE BODY --- */
+body {
+  background: var(--abyss);
+  color: var(--pale);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: default;
+  line-height: 1.6;
+}
+
+/* --- CUSTOM TEXT SELECTION --- */
+::selection {
+  background: var(--blood);
+  color: var(--bone);
+}
+
+/* --- CUSTOM SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--abyss);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blood);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--glow);
+}
+
+/* --- UTILITY CLASSES --- */
+/* Reusable helpers used across sections */
+
+.highlight-text {
+  color: var(--glow) !important;
+  font-weight: 500 !important;
+}
+
+.text-bone {
+  color: var(--bone);
+}
+
+.text-rust {
+  color: var(--rust);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+}
+
+.text-display {
+  font-family: var(--font-display);
+}

@@ -1,0 +1,626 @@
+/* ============================================
+   COMPONENTS.CSS
+   Purpose: Reusable UI components
+   Dependencies: base.css, animations.css
+   Affects: quote blocks, particles,
+            canvas background, loading screen,
+            custom cursor
+   ============================================ */
+
+/* --- SPIRAL CANVAS BACKGROUND --- */
+#spiral-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* --- FLOATING PARTICLES --- */
+.particle {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: var(--glow);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: drift 8s infinite ease-in-out;
+}
+
+/* --- QUOTE BLOCK --- */
+.quote-block {
+  border-left: 2px solid var(--glow);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  background: linear-gradient(90deg, rgba(139, 0, 0, 0.08), transparent);
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+}
+
+.quote-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quote-block p {
+  font-style: italic;
+  font-size: 1.15rem !important;
+  color: var(--bone) !important;
+  line-height: 1.9 !important;
+  margin: 0 !important;
+}
+
+/* Animated left border glow line */
+.quote-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 2px;
+  height: 0;
+  background: var(--glow);
+  box-shadow: 0 0 15px var(--glow);
+  transition: height 1s ease;
+}
+
+.quote-block.visible::before {
+  height: 100%;
+}
+
+/* --- LOADING SCREEN --- */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--abyss);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+/* Hidden state — added by JS when loading is done */
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-title {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  color: var(--glow);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  animation: flicker 4s infinite;
+}
+
+.loader-warning {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  color: var(--rust);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* Progress bar track */
+.loader-bar-track {
+  width: min(400px, 80vw);
+  height: 2px;
+  background: rgba(139, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Progress bar fill — animated by JS */
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blood), var(--glow));
+  box-shadow: 0 0 10px var(--glow);
+  transition: width 0.05s linear;
+}
+
+.loader-percent {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--pale);
+  letter-spacing: 3px;
+}
+
+.loader-status {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--rust);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  min-height: 1rem;
+}
+
+/* --- CUSTOM CURSOR --- */
+/* Only show on devices that have a fine pointer (mouse) */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: var(--glow);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition:
+      transform 0.1s ease,
+      width 0.2s ease,
+      height 0.2s ease,
+      opacity 0.2s ease;
+    box-shadow:
+      0 0 8px var(--glow),
+      0 0 20px rgba(255, 34, 0, 0.4);
+    mix-blend-mode: screen;
+  }
+
+  /* Expanded state when hovering links */
+  .custom-cursor.expanded {
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: 1px solid var(--glow);
+    box-shadow: 0 0 15px var(--glow);
+  }
+
+  /* Trail dot left behind cursor */
+  .cursor-trail {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: var(--glow);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    animation: trailFade 0.6s ease forwards;
+  }
+}
+
+/* --- SOUND TOGGLE BUTTON --- */
+#sound-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 998;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(10, 10, 15, 0.85);
+  color: var(--rust);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  backdrop-filter: blur(5px);
+}
+
+#sound-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+#sound-toggle:hover {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  background: rgba(139, 0, 0, 0.1);
+}
+
+/* Active state when sound is playing */
+#sound-toggle.active {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+}
+
+/* Pulse animation when active */
+#sound-toggle.active::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  background: var(--glow);
+  border-radius: 50%;
+  animation: soundPulse 2s infinite;
+}
+
+@keyframes soundPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+}
+
+/* Sound wave bars animation when playing */
+#sound-toggle.active #sound-waves path {
+  animation: waveFlicker 3s infinite ease-in-out;
+}
+
+#sound-toggle.active #sound-waves path:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+@keyframes waveFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  #sound-toggle {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  #sound-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* --- SOUND MESSAGE OVERLAY --- */
+#sound-message {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  z-index: 997;
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  color: var(--glow);
+  letter-spacing: 2px;
+  padding: 1rem 1.5rem;
+  background: rgba(10, 10, 15, 0.95);
+  border: 1px solid rgba(255, 34, 0, 0.3);
+  max-width: 350px;
+  text-align: right;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  box-shadow: 0 0 20px rgba(255, 34, 0, 0.1);
+  animation: none;
+}
+
+#sound-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: messageGlitch 4s ease forwards;
+}
+
+@keyframes messageGlitch {
+  0% {
+    transform: translateY(0);
+  }
+  5% {
+    transform: translate(-2px, 1px);
+  }
+  10% {
+    transform: translate(1px, -1px);
+  }
+  15% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Line above the message like a data readout */
+#sound-message::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: 0;
+  height: 1px;
+  background: var(--glow);
+  box-shadow: 0 0 8px var(--glow);
+  transition: width 0.6s ease 0.2s;
+}
+
+#sound-message.visible::before {
+  width: 100%;
+}
+
+/* Small label */
+#sound-message::after {
+  content: "SYSTEM RESPONSE";
+  position: absolute;
+  top: -1.2rem;
+  right: 0;
+  font-size: 0.55rem;
+  color: var(--rust);
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.4s;
+}
+
+#sound-message.visible::after {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  #sound-message {
+    right: 1rem;
+    bottom: 5rem;
+    max-width: 280px;
+    font-size: 0.75rem;
+  }
+}
+
+/* --- SECTION GLITCH FLASH --- */
+.section-divider.glitch-flash::before {
+  animation: dividerGlitch 0.3s ease;
+}
+
+.section-divider.glitch-flash {
+  animation: lineGlitch 0.3s ease;
+}
+
+@keyframes dividerGlitch {
+  0% {
+    color: var(--glow);
+    transform: translate(-50%, -50%);
+  }
+  20% {
+    color: #ff0000;
+    transform: translate(-52%, -48%);
+  }
+  40% {
+    color: #0044ff;
+    transform: translate(-48%, -52%);
+  }
+  60% {
+    color: var(--glow);
+    transform: translate(-51%, -50%);
+  }
+  80% {
+    color: #ff0000;
+    transform: translate(-50%, -49%);
+  }
+  100% {
+    color: var(--glow);
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes lineGlitch {
+  0% {
+    background: linear-gradient(90deg, transparent, var(--blood), transparent);
+    opacity: 1;
+  }
+  25% {
+    background: linear-gradient(90deg, transparent, #ff0000, transparent);
+    opacity: 0.5;
+  }
+  50% {
+    background: linear-gradient(90deg, transparent, #0044ff, transparent);
+    opacity: 0.8;
+  }
+  75% {
+    background: linear-gradient(90deg, transparent, var(--glow), transparent);
+    opacity: 0.4;
+  }
+  100% {
+    background: linear-gradient(90deg, transparent, var(--blood), transparent);
+    opacity: 1;
+  }
+}
+
+/* --- AUTHOR CORNER PANEL --- */
+.author-panel {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 998;
+}
+
+/* The small "I" button */
+.author-toggle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(10, 10, 15, 0.85);
+  color: var(--rust);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  backdrop-filter: blur(5px);
+  position: relative;
+}
+
+.author-toggle:hover {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  background: rgba(139, 0, 0, 0.1);
+}
+
+.author-toggle span {
+  font-style: italic;
+}
+
+/* The slide-up content panel */
+.author-content {
+  position: absolute;
+  bottom: calc(100% + 1rem);
+  left: 0;
+  width: 280px;
+  padding: 1.5rem;
+  background: rgba(10, 10, 15, 0.97);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity var(--transition-fast),
+    visibility var(--transition-fast),
+    transform var(--transition-fast);
+  backdrop-filter: blur(10px);
+}
+
+.author-content.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Close button */
+.author-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--rust);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  line-height: 1;
+}
+
+.author-close:hover {
+  color: var(--glow);
+}
+
+.author-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  color: var(--glow);
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.author-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--bone);
+  font-style: italic;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.author-desc {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--pale);
+  margin-bottom: 1.2rem;
+}
+
+.author-desc strong {
+  color: var(--glow);
+}
+
+.author-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.author-meta span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--rust);
+  text-transform: uppercase;
+}
+
+.author-warning {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--pale);
+  font-style: italic;
+  opacity: 0.5;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(139, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .author-panel {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .author-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .author-content {
+    width: 250px;
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .author-content {
+    width: calc(100vw - 3rem);
+    left: 0;
+  }
+}

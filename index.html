@@ -3,880 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta -->
     <title>The Apex Dilemma</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap");
-
-      :root {
-        --blood: #8b0000;
-        --abyss: #0a0a0f;
-        --steel: #2a2a35;
-        --flesh: #4a1a1a;
-        --glow: #ff2200;
-        --pale: #c8b8a8;
-        --bone: #e8ddd0;
-        --rust: #6b3030;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        background: var(--abyss);
-        color: var(--pale);
-        font-family: "Rajdhani", sans-serif;
-        overflow-x: hidden;
-        cursor: default;
-      }
-
-      /* --- SPIRAL CANVAS BACKGROUND --- */
-      #spiral-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        opacity: 0.15;
-      }
-
-      /* --- PARTICLES --- */
-      .particle {
-        position: fixed;
-        width: 2px;
-        height: 2px;
-        background: var(--glow);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1;
-        opacity: 0;
-        animation: drift 8s infinite ease-in-out;
-      }
-
-      @keyframes drift {
-        0%,
-        100% {
-          opacity: 0;
-          transform: translateY(0) scale(1);
-        }
-        50% {
-          opacity: 0.6;
-          transform: translateY(-80px) scale(2);
-        }
-      }
-
-      /* --- GLITCH EFFECT --- */
-      @keyframes glitch {
-        0%,
-        90%,
-        100% {
-          transform: translate(0);
-        }
-        92% {
-          transform: translate(-2px, 1px);
-        }
-        94% {
-          transform: translate(2px, -1px);
-        }
-        96% {
-          transform: translate(-1px, -2px);
-        }
-        98% {
-          transform: translate(1px, 2px);
-        }
-      }
-
-      @keyframes glitchColor {
-        0%,
-        90%,
-        100% {
-          text-shadow: none;
-        }
-        93% {
-          text-shadow:
-            -2px 0 #ff0000,
-            2px 0 #0000ff;
-        }
-        96% {
-          text-shadow:
-            2px 0 #ff0000,
-            -2px 0 #0000ff;
-        }
-      }
-
-      /* --- SCROLL PROGRESS BAR --- */
-      #progress-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background: linear-gradient(
-          90deg,
-          var(--blood),
-          var(--glow),
-          var(--blood)
-        );
-        z-index: 1000;
-        transition: width 0.1s linear;
-        box-shadow:
-          0 0 10px var(--glow),
-          0 0 20px rgba(255, 34, 0, 0.3);
-      }
-
-      /* --- NAV --- */
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 999;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: linear-gradient(
-          180deg,
-          rgba(10, 10, 15, 0.95) 0%,
-          transparent 100%
-        );
-        backdrop-filter: blur(5px);
-        transition: all 0.4s ease;
-      }
-
-      nav.scrolled {
-        background: rgba(10, 10, 15, 0.98);
-        box-shadow: 0 2px 20px rgba(139, 0, 0, 0.3);
-      }
-
-      .nav-logo {
-        font-family: "Cinzel", serif;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--glow);
-        letter-spacing: 3px;
-        text-transform: uppercase;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        list-style: none;
-      }
-
-      .nav-links a {
-        color: var(--pale);
-        text-decoration: none;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.8rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        position: relative;
-        transition: color 0.3s;
-      }
-
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--glow);
-        transition: width 0.3s;
-      }
-
-      .nav-links a:hover {
-        color: var(--glow);
-      }
-
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-
-      .hamburger {
-        display: none;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-        z-index: 1001;
-      }
-
-      .hamburger span {
-        width: 25px;
-        height: 2px;
-        background: var(--pale);
-        transition: all 0.3s;
-      }
-
-      .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-      }
-
-      .hamburger.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-      }
-
-      /* --- HERO --- */
-      #hero {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        z-index: 2;
-        overflow: hidden;
-      }
-
-      #hero::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(
-          ellipse at center,
-          transparent 30%,
-          var(--abyss) 80%
-        );
-        z-index: 1;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 2;
-      }
-
-      .hero-subtitle-top {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.85rem;
-        color: var(--glow);
-        letter-spacing: 8px;
-        text-transform: uppercase;
-        margin-bottom: 1.5rem;
-        opacity: 0;
-        animation: fadeInUp 1s 0.5s forwards;
-      }
-
-      .hero-title {
-        font-family: "Cinzel", serif;
-        font-size: clamp(2.5rem, 7vw, 6rem);
-        font-weight: 900;
-        color: var(--bone);
-        letter-spacing: 6px;
-        text-transform: uppercase;
-        line-height: 1.1;
-        margin-bottom: 1.5rem;
-        opacity: 0;
-        animation:
-          fadeInUp 1s 0.8s forwards,
-          glitchColor 10s 3s infinite;
-      }
-
-      .hero-title .accent {
-        color: var(--glow);
-        display: block;
-        text-shadow: 0 0 40px rgba(255, 34, 0, 0.4);
-      }
-
-      .hero-tagline {
-        font-family: "Rajdhani", sans-serif;
-        font-size: 1.3rem;
-        font-weight: 300;
-        color: var(--pale);
-        font-style: italic;
-        letter-spacing: 2px;
-        opacity: 0;
-        animation: fadeInUp 1s 1.1s forwards;
-        margin-bottom: 2rem;
-      }
-
-      .hero-tagline::before,
-      .hero-tagline::after {
-        content: '"';
-        color: var(--glow);
-        font-size: 1.5rem;
-      }
-
-      .hero-meta {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.75rem;
-        color: var(--rust);
-        letter-spacing: 3px;
-        opacity: 0;
-        animation: fadeInUp 1s 1.4s forwards;
-      }
-
-      .scroll-indicator {
-        position: absolute;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        opacity: 0;
-        animation: fadeInUp 1s 2s forwards;
-      }
-
-      .scroll-indicator span {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.65rem;
-        letter-spacing: 3px;
-        color: var(--rust);
-        text-transform: uppercase;
-      }
-
-      .scroll-arrow {
-        width: 20px;
-        height: 20px;
-        border-right: 1px solid var(--glow);
-        border-bottom: 1px solid var(--glow);
-        transform: rotate(45deg);
-        animation: bounce 2s infinite;
-      }
-
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: rotate(45deg) translateY(0);
-          opacity: 1;
-        }
-        50% {
-          transform: rotate(45deg) translateY(8px);
-          opacity: 0.3;
-        }
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* --- SECTION STYLING --- */
-      .section {
-        position: relative;
-        z-index: 2;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 6rem 2rem;
-      }
-
-      .section-divider {
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--blood),
-          transparent
-        );
-        margin: 0 auto;
-        position: relative;
-      }
-
-      .section-divider::before {
-        content: "◆";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: var(--glow);
-        font-size: 0.8rem;
-        background: var(--abyss);
-        padding: 0 1rem;
-      }
-
-      .section-number {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.7rem;
-        color: var(--glow);
-        letter-spacing: 5px;
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-        opacity: 0.7;
-      }
-
-      .section-title {
-        font-family: "Cinzel", serif;
-        font-size: clamp(1.8rem, 4vw, 2.8rem);
-        font-weight: 700;
-        color: var(--bone);
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        margin-bottom: 2.5rem;
-        position: relative;
-        display: inline-block;
-      }
-
-      .section-title::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 60px;
-        height: 2px;
-        background: var(--glow);
-        box-shadow: 0 0 10px var(--glow);
-      }
-
-      .section p {
-        font-size: 1.1rem;
-        line-height: 2;
-        font-weight: 300;
-        margin-bottom: 1.5rem;
-        color: var(--pale);
-      }
-
-      .section p strong {
-        color: var(--bone);
-        font-weight: 600;
-      }
-
-      .highlight-text {
-        color: var(--glow) !important;
-        font-weight: 500 !important;
-      }
-
-      /* --- QUOTE BLOCKS --- */
-      .quote-block {
-        border-left: 2px solid var(--glow);
-        padding: 1.5rem 2rem;
-        margin: 2.5rem 0;
-        background: linear-gradient(90deg, rgba(139, 0, 0, 0.08), transparent);
-        position: relative;
-      }
-
-      .quote-block p {
-        font-style: italic;
-        font-size: 1.15rem;
-        color: var(--bone);
-        line-height: 1.9;
-      }
-
-      .quote-block::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -2px;
-        width: 2px;
-        height: 0;
-        background: var(--glow);
-        box-shadow: 0 0 15px var(--glow);
-        animation: none;
-        transition: height 1s ease;
-      }
-
-      .quote-block.visible::before {
-        height: 100%;
-      }
-
-      /* --- SPIRAL SVG SECTION --- */
-      .spiral-visual {
-        text-align: center;
-        padding: 4rem 0;
-        position: relative;
-      }
-
-      .spiral-visual svg {
-        max-width: 350px;
-        width: 100%;
-        height: auto;
-      }
-
-      .spiral-path {
-        fill: none;
-        stroke: var(--glow);
-        stroke-width: 1.5;
-        stroke-dasharray: 2000;
-        stroke-dashoffset: 2000;
-        filter: drop-shadow(0 0 4px rgba(255, 34, 0, 0.5));
-        transition: stroke-dashoffset 3s ease;
-      }
-
-      .spiral-visual.visible .spiral-path {
-        stroke-dashoffset: 0;
-      }
-
-      .spiral-caption {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.75rem;
-        color: var(--rust);
-        letter-spacing: 4px;
-        margin-top: 1.5rem;
-        text-transform: uppercase;
-      }
-
-      /* --- COMPARISON TABLE --- */
-      .comparison {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin: 3rem 0;
-      }
-
-      .comparison-card {
-        padding: 2rem;
-        position: relative;
-        overflow: hidden;
-        transition:
-          transform 0.3s,
-          box-shadow 0.3s;
-      }
-
-      .comparison-card:hover {
-        transform: translateY(-4px);
-      }
-
-      .comparison-card.order {
-        background: linear-gradient(
-          135deg,
-          rgba(42, 42, 53, 0.6),
-          rgba(42, 42, 53, 0.2)
-        );
-        border: 1px solid rgba(200, 184, 168, 0.15);
-      }
-
-      .comparison-card.order:hover {
-        box-shadow: 0 8px 30px rgba(200, 184, 168, 0.08);
-      }
-
-      .comparison-card.chaos {
-        background: linear-gradient(
-          135deg,
-          rgba(74, 26, 26, 0.6),
-          rgba(74, 26, 26, 0.2)
-        );
-        border: 1px solid rgba(255, 34, 0, 0.2);
-      }
-
-      .comparison-card.chaos:hover {
-        box-shadow: 0 8px 30px rgba(255, 34, 0, 0.1);
-      }
-
-      .comparison-card h3 {
-        font-family: "Cinzel", serif;
-        font-size: 1.3rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        margin-bottom: 1.5rem;
-      }
-
-      .comparison-card.order h3 {
-        color: var(--pale);
-      }
-
-      .comparison-card.chaos h3 {
-        color: var(--glow);
-      }
-
-      .comparison-card ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-      }
-
-      .comparison-card ul li {
-        font-size: 0.95rem;
-        padding-left: 1.2rem;
-        position: relative;
-        line-height: 1.6;
-      }
-
-      .comparison-card.order ul li::before {
-        content: "▪";
-        position: absolute;
-        left: 0;
-        color: var(--pale);
-      }
-
-      .comparison-card.chaos ul li::before {
-        content: "▪";
-        position: absolute;
-        left: 0;
-        color: var(--glow);
-      }
-
-      /* --- QUESTIONS SECTION --- */
-      .question-item {
-        padding: 2rem 0;
-        border-bottom: 1px solid rgba(139, 0, 0, 0.2);
-      }
-
-      .question-item:last-child {
-        border-bottom: none;
-      }
-
-      .question-text {
-        font-family: "Cinzel", serif;
-        font-size: 1.15rem;
-        color: var(--bone);
-        font-weight: 400;
-        line-height: 1.8;
-        position: relative;
-        padding-left: 2rem;
-      }
-
-      .question-text::before {
-        content: "?";
-        position: absolute;
-        left: 0;
-        top: 0;
-        font-family: "Cinzel", serif;
-        font-size: 1.5rem;
-        color: var(--glow);
-        font-weight: 900;
-      }
-
-      .question-sub {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.8rem;
-        color: var(--rust);
-        margin-top: 0.8rem;
-        padding-left: 2rem;
-        letter-spacing: 1px;
-      }
-
-      /* --- TIMELINE --- */
-      .timeline {
-        position: relative;
-        padding: 2rem 0;
-        margin: 2rem 0;
-      }
-
-      .timeline::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 20px;
-        width: 1px;
-        height: 100%;
-        background: linear-gradient(
-          180deg,
-          var(--blood),
-          var(--glow),
-          var(--blood)
-        );
-      }
-
-      .timeline-item {
-        padding-left: 50px;
-        margin-bottom: 2.5rem;
-        position: relative;
-        opacity: 0;
-        transform: translateX(-20px);
-        transition: all 0.6s ease;
-      }
-
-      .timeline-item.visible {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        left: 15px;
-        top: 8px;
-        width: 11px;
-        height: 11px;
-        border: 2px solid var(--glow);
-        border-radius: 50%;
-        background: var(--abyss);
-        box-shadow: 0 0 8px rgba(255, 34, 0, 0.4);
-      }
-
-      .timeline-label {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.7rem;
-        color: var(--glow);
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        margin-bottom: 0.3rem;
-      }
-
-      .timeline-text {
-        font-size: 1rem;
-        line-height: 1.8;
-        color: var(--pale);
-      }
-
-      /* --- FOOTER --- */
-      footer {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        padding: 4rem 2rem;
-        border-top: 1px solid rgba(139, 0, 0, 0.2);
-      }
-
-      .footer-spiral {
-        font-size: 2rem;
-        color: var(--glow);
-        margin-bottom: 1rem;
-        animation: spin 20s linear infinite;
-        display: inline-block;
-      }
-
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .footer-text {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.75rem;
-        color: var(--rust);
-        letter-spacing: 3px;
-      }
-
-      .footer-quote {
-        font-family: "Cinzel", serif;
-        font-size: 1rem;
-        color: var(--pale);
-        font-style: italic;
-        margin-top: 1rem;
-        opacity: 0.6;
-      }
-
-      /* --- REVEAL ANIMATIONS --- */
-      .reveal {
-        opacity: 0;
-        transform: translateY(40px);
-        transition: all 0.8s ease;
-      }
-
-      .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .reveal-delay-1 {
-        transition-delay: 0.1s;
-      }
-      .reveal-delay-2 {
-        transition-delay: 0.2s;
-      }
-      .reveal-delay-3 {
-        transition-delay: 0.3s;
-      }
-
-      /* --- RESPONSIVE --- */
-      @media (max-width: 768px) {
-        .nav-links {
-          position: fixed;
-          top: 0;
-          right: -100%;
-          width: 70%;
-          height: 100vh;
-          background: rgba(10, 10, 15, 0.98);
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          transition: right 0.4s ease;
-          border-left: 1px solid rgba(139, 0, 0, 0.3);
-        }
-
-        .nav-links.open {
-          right: 0;
-        }
-
-        .hamburger {
-          display: flex;
-        }
-
-        .comparison {
-          grid-template-columns: 1fr;
-        }
-
-        .section {
-          padding: 4rem 1.5rem;
-        }
-
-        .hero-tagline {
-          font-size: 1rem;
-          padding: 0 1rem;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .hero-title {
-          letter-spacing: 2px;
-        }
-
-        .nav-logo {
-          font-size: 0.9rem;
-          letter-spacing: 2px;
-        }
-      }
-
-      /* --- CUSTOM SELECTION --- */
-      ::selection {
-        background: var(--blood);
-        color: var(--bone);
-      }
-
-      /* --- SCROLLBAR --- */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: var(--abyss);
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: var(--blood);
-        border-radius: 3px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--glow);
-      }
-    </style>
+    <meta
+      name="description"
+      content="A paradox by I — The creation of an absolute machine does not mark the end of progress, but the birth of the necessity for its superior."
+    />
+    <meta name="author" content="I" />
+
+    <!-- Open Graph — controls how link looks when shared -->
+    <meta property="og:title" content="The Apex Dilemma" />
+    <meta
+      property="og:description"
+      content="The spiral never returns to its centre."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://the-apex-paradox.vercel.app" />
+
+    <!-- CSS — order matters, base must load first -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/hero.css" />
+    <link rel="stylesheet" href="css/sections.css" />
+    <link rel="stylesheet" href="css/components.css" />
   </head>
   <body>
-    <!-- Progress Bar -->
+    <!-- ═══════════════════════════════════════
+         LOADING SCREEN
+         Controlled by: js/loader.js (coming soon)
+    ═══════════════════════════════════════ -->
+    <div id="loader">
+      <div class="loader-title">APEX PROTOCOL — INITIALIZING</div>
+      <div class="loader-warning">⚠ WARNING: CONTENTS MAY BE IRREVERSIBLE</div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loader-bar-fill"></div>
+      </div>
+      <div class="loader-percent" id="loader-percent">0%</div>
+      <div class="loader-status" id="loader-status">LOADING PARADOX...</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCROLL PROGRESS BAR
+         Controlled by: js/scroll.js
+    ═══════════════════════════════════════ -->
     <div id="progress-bar"></div>
 
-    <!-- Spiral Background Canvas -->
+    <!-- ═══════════════════════════════════════
+         SPIRAL CANVAS BACKGROUND
+         Controlled by: js/spiral.js
+    ═══════════════════════════════════════ -->
     <canvas id="spiral-bg"></canvas>
 
-    <!-- Floating Particles -->
+    <!-- ═══════════════════════════════════════
+         FLOATING PARTICLES
+         Controlled by: js/spiral.js
+    ═══════════════════════════════════════ -->
     <div id="particles"></div>
 
-    <!-- Navigation -->
+    <!-- ═══════════════════════════════════════
+         CUSTOM CURSOR
+         Controlled by: js/cursor.js (coming soon)
+    ═══════════════════════════════════════ -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         Controlled by: js/nav.js
+    ═══════════════════════════════════════ -->
     <nav id="navbar">
       <div class="nav-logo">◆ Apex Dilemma</div>
-      <div class="hamburger" id="hamburger">
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
+
       <ul class="nav-links" id="nav-links">
         <li><a href="#description">Description</a></li>
+        <li><a href="#apex-scale-section">Scale</a></li>
         <li><a href="#paradox">Paradox</a></li>
         <li><a href="#explanation">Explanation</a></li>
         <li><a href="#example">Example</a></li>
@@ -885,55 +92,68 @@
       </ul>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ═══════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════ -->
     <section id="hero">
       <div class="hero-content">
         <div class="hero-subtitle-top">A Paradox by I</div>
+
         <h1 class="hero-title">
           The Apex
           <span class="accent">Dilemma</span>
         </h1>
-        <p class="hero-tagline">The spiral never returns to its centre.</p>
+
+        <!-- Typewriter effect targets this element -->
+        <p class="hero-tagline typewriter-mode" id="hero-tagline"></p>
+
         <div class="hero-meta">Documented — 12:00 · 4th March, 2026</div>
       </div>
+
       <div class="scroll-indicator">
-        <span>Descend</span>
-        <div class="scroll-arrow"></div>
+        <span class="scroll-label" data-text="Descend">Descend</span>
+        <div class="scroll-chevrons">
+          <span class="chevron-main">⌄</span>
+          <span class="chevron-ghost">⌄</span>
+          <span class="chevron-ghost">⌄</span>
+          <span class="chevron-ghost">⌄</span>
+          <span class="chevron-ghost">⌄</span>
+          <div class="scroll-scanline"></div>
+        </div>
       </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Description -->
+    <!-- ═══════════════════════════════════════
+         SECTION I — DESCRIPTION
+    ═══════════════════════════════════════ -->
     <section id="description" class="section">
       <div class="reveal">
         <div class="section-number">Section I</div>
         <h2 class="section-title">Description</h2>
       </div>
-      <div class="reveal reveal-delay-1">
-        <p>
-          The theme or the law of this Universe is
-          <strong class="highlight-text">to devour or to get devoured</strong> —
-          that's why humans devour each other in the act of War.
-        </p>
-      </div>
-      <div class="reveal reveal-delay-2">
-        <p>
-          Now let me ask you a question: was the first machine built out of
-          desperation to end a war, or out of pure arrogance? Let me tell you
-          the answer: <strong>it is neither</strong>; it was built for greater
-          efficiency and nothing else, but now look at what it has done.
-        </p>
-      </div>
-      <div class="reveal reveal-delay-3">
-        <p>
-          It is not just an arms race anymore; it's way more than that. It is
-          like a spiral that, with every revolution, keeps on getting bigger and
-          bigger but further from the centre.
-        </p>
-      </div>
 
-      <!-- Spiral Visual -->
+      <p class="reveal reveal-delay-1">
+        The theme or the law of this Universe is
+        <strong class="highlight-text">to devour or to get devoured</strong>
+        — that is why humans devour each other in the act of War.
+      </p>
+
+      <p class="reveal reveal-delay-2">
+        Now let me ask you a question: was the first machine built out of
+        desperation to end a war, or out of pure arrogance? Let me tell you the
+        answer: <strong>it is neither</strong>; it was built for greater
+        efficiency and nothing else, but now look at what it has done.
+      </p>
+
+      <p class="reveal reveal-delay-3">
+        It is not just an arms race anymore; it is way more than that. It is
+        like a spiral that, with every revolution, keeps on getting bigger and
+        bigger but further from the centre.
+      </p>
+
+      <!-- SVG Spiral Visual -->
       <div class="spiral-visual reveal" id="spiral-container">
         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -964,7 +184,6 @@
                     C 304 268, 260 315, 200 312
                 "
           />
-          <!-- Center dot -->
           <circle cx="200" cy="200" r="3" fill="#ff2200" opacity="0.8">
             <animate
               attributeName="r"
@@ -985,48 +204,139 @@
         </div>
       </div>
 
+      <p class="reveal">
+        The machines are also the same: with every evolution, they grow stronger
+        but
+        <strong class="highlight-text">
+          further from what they were actually made for </strong
+        >.
+      </p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ═══════════════════════════════════════
+         THE APEX SCALE — Interactive Evolution Map
+    ═══════════════════════════════════════ -->
+    <section class="section" id="apex-scale-section">
       <div class="reveal">
-        <p>
-          The machines are also the same: with every evolution, they grow
-          stronger but
-          <strong class="highlight-text"
-            >further from what they were actually made for</strong
-          >.
-        </p>
+        <div class="section-number">The Spiral Mapped</div>
+        <h2 class="section-title">The Apex Scale</h2>
+      </div>
+
+      <p class="reveal">
+        From the first stone tool to the machines that surpass their creators —
+        every point on this scale is a revolution of the spiral, growing larger,
+        growing
+        <strong class="highlight-text">further from the centre</strong>.
+      </p>
+
+      <div class="apex-scale reveal" id="apex-scale">
+        <!-- The connecting line -->
+        <div class="scale-line">
+          <div class="scale-line-fill" id="scale-line-fill"></div>
+        </div>
+
+        <!-- Scale points -->
+        <div
+          class="scale-point"
+          data-info="Flint, axe, fire. Built for survival. Pure efficiency. The centre of the spiral."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Tool</div>
+        </div>
+
+        <div
+          class="scale-point"
+          data-info="Swords, spears, bows. Still extensions of the human body. The user is still the weapon."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Weapon</div>
+        </div>
+
+        <div
+          class="scale-point"
+          data-info="Cannons, guns, bombs. The user pulls a trigger. The machine does the killing. Distance grows."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Engine</div>
+        </div>
+
+        <div
+          class="scale-point"
+          data-info="Tanks, jets, warships. Humans ride inside the machine now. Who is carrying whom?"
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Vehicle</div>
+        </div>
+
+        <div
+          class="scale-point"
+          data-info="Mechs, exosuits. The human wears the machine. Symmetrical. Logical. The last point of order."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Mech</div>
+        </div>
+
+        <div
+          class="scale-point chaos-point"
+          data-info="Organic, twisted, aware. It surpasses human science. The pilot is no longer in control. The spiral leaves the centre."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">Beyond</div>
+        </div>
+
+        <div
+          class="scale-point chaos-point final-point"
+          data-info="Does it exist? A machine that devours the concept of machines. The spiral consumes itself. Nothingness."
+        >
+          <div class="scale-dot"></div>
+          <div class="scale-label">???</div>
+        </div>
+
+        <!-- Info display box -->
+        <div class="scale-info" id="scale-info">
+          <span class="scale-info-label">HOVER A POINT TO EXAMINE</span>
+          <p id="scale-info-text">
+            Each point represents a revolution of the spiral.
+          </p>
+        </div>
       </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Statement of the Paradox -->
+    <!-- ═══════════════════════════════════════
+         SECTION II — STATEMENT OF THE PARADOX
+    ═══════════════════════════════════════ -->
     <section id="paradox" class="section">
       <div class="reveal">
         <div class="section-number">Section II</div>
         <h2 class="section-title">Statement of the Paradox</h2>
       </div>
-      <div class="quote-block reveal">
+
+      <div class="quote-block">
         <p>
           The creation of an absolute machine does not mark the end of progress,
           but the birth of the necessity for its superior.
         </p>
       </div>
-      <div class="reveal">
-        <p>
-          It can also be said that
-          <strong
-            >to engineer the ultimate solution is to provide the blueprints for
-            the ultimate problem</strong
-          >.
-        </p>
-      </div>
-      <div class="reveal">
-        <p>
-          It's just that when a machine becomes a god of the battlefield, the
-          universe responds by creating a
-          <strong class="highlight-text">monster to devour it</strong>.
-        </p>
-      </div>
-      <div class="quote-block reveal">
+
+      <p class="reveal">
+        It can also be said that
+        <strong>
+          to engineer the ultimate solution is to provide the blueprints for the
+          ultimate problem </strong
+        >.
+      </p>
+
+      <p class="reveal">
+        It is just that when a machine becomes a god of the battlefield, the
+        universe responds by creating a
+        <strong class="highlight-text">monster to devour it</strong>.
+      </p>
+
+      <div class="quote-block">
         <p>
           The main message is that it does not matter how strong a machine is
           created — there will always be a machine created stronger than it.
@@ -1036,27 +346,27 @@
 
     <div class="section-divider"></div>
 
-    <!-- Explanation -->
+    <!-- ═══════════════════════════════════════
+         SECTION III — EXPLANATION
+    ═══════════════════════════════════════ -->
     <section id="explanation" class="section">
       <div class="reveal">
         <div class="section-number">Section III</div>
         <h2 class="section-title">Explanation</h2>
       </div>
-      <div class="reveal">
-        <p>
-          Whenever a machine built to conquer the abyss is created, it
-          eventually <strong>becomes part of it</strong>, inviting a greater
-          horror to rise and replace it.
-        </p>
-      </div>
-      <div class="reveal">
-        <p>
-          Machines are built to ensure absolute security, but their sheer
-          existence creates
-          <strong class="highlight-text">absolute terror and insecurity</strong
-          >.
-        </p>
-      </div>
+
+      <p class="reveal">
+        Whenever a machine built to conquer the abyss is created, it eventually
+        <strong>becomes part of it</strong>, inviting a greater horror to rise
+        and replace it.
+      </p>
+
+      <p class="reveal">
+        Machines are built to ensure absolute security, but their sheer
+        existence creates
+        <strong class="highlight-text"> absolute terror and insecurity </strong
+        >.
+      </p>
 
       <!-- Timeline -->
       <div class="timeline">
@@ -1092,32 +402,34 @@
         </div>
       </div>
 
-      <div class="quote-block reveal">
+      <div class="quote-block">
         <p>The shield is so heavy that it crushes the person holding it.</p>
       </div>
-      <div class="reveal">
-        <p>
-          When a machine is built to provide absolute security, it must be
-          capable of <strong>absolute destruction</strong>. Therefore, the
-          people it protects live in a state of constant terror because their
-          "saviour" is also a monster that could end them at any moment.
-        </p>
-      </div>
+
+      <p class="reveal">
+        When a machine is built to provide absolute security, it must be capable
+        of <strong>absolute destruction</strong>. Therefore, the people it
+        protects live in a state of constant terror because their "saviour" is
+        also a monster that could end them at any moment.
+      </p>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Example -->
+    <!-- ═══════════════════════════════════════
+         SECTION IV — EXAMPLE
+    ═══════════════════════════════════════ -->
     <section id="example" class="section">
       <div class="reveal">
         <div class="section-number">Section IV</div>
         <h2 class="section-title">Example</h2>
       </div>
-      <div class="reveal">
-        <p>For contrast, let's examine two paradigms of machine evolution:</p>
-      </div>
 
-      <!-- Comparison Cards -->
+      <p class="reveal">
+        For contrast, let us examine two paradigms of machine evolution:
+      </p>
+
+      <!-- Order vs Chaos Comparison -->
       <div class="comparison">
         <div class="comparison-card order reveal">
           <h3>⬡ Order — The Mech</h3>
@@ -1132,68 +444,64 @@
             </li>
           </ul>
         </div>
-        <div class="comparison-card chaos reveal">
+        <div class="comparison-card chaos reveal reveal-delay-2">
           <h3>⬢ Chaos — Beyond</h3>
           <ul>
-            <li>To surpass limits, it must be "organic"</li>
+            <li>To surpass limits, it must be organic</li>
             <li>Adaptable not only logically but biologically</li>
             <li>Twisted rather than normal</li>
             <li>Bends or surpasses human science totally</li>
             <li>Represents Chaos and the dark Abyss</li>
-            <li>
-              Has awareness of what it is doing — greater than any species on
-              Earth
-            </li>
+            <li>Has awareness — greater than any species on Earth</li>
           </ul>
         </div>
       </div>
 
-      <div class="reveal">
-        <p>
-          If you want to go beyond steel, steel won't cut it — you would need
-          something <strong class="highlight-text">"organic"</strong>. It must
-          be twisted rather than normal. It would not only be scientific, but it
-          would also have <strong>awareness</strong> of the things it is doing.
-          It would be greater than any species present on Earth.
-        </p>
-      </div>
+      <p class="reveal">
+        If you want to go beyond steel, steel will not cut it — you would need
+        something
+        <strong class="highlight-text">"organic"</strong>. It must be twisted
+        rather than normal. It would not only be scientific, but it would also
+        have <strong>awareness</strong> of the things it is doing. It would be
+        greater than any species present on Earth.
+      </p>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Notes -->
+    <!-- ═══════════════════════════════════════
+         SECTION V — NOTES
+    ═══════════════════════════════════════ -->
     <section id="notes" class="section">
       <div class="reveal">
         <div class="section-number">Section V</div>
         <h2 class="section-title">Notes</h2>
       </div>
-      <div class="reveal">
-        <p>
-          The bigger the spiral of evolution gets, the further it gets from the
-          centre of the main idea — the use for which it was created. Slowly,
-          slowly, it gets so far away that
-          <strong>it does not matter what its original use was</strong>; it
-          twists and gets out of the boundary of human logic.
-        </p>
-      </div>
-      <div class="reveal">
-        <p>
-          It loses its relevance, and at a point, it becomes
-          <strong class="highlight-text"
-            >sentient enough to make its own decisions</strong
-          >.
-        </p>
-      </div>
-      <div class="reveal">
-        <p>
-          There will come such a time when it will stop looking like a tool, and
-          its shape will become
-          <strong>abstract rather than symmetric</strong> for more efficiency.
-          It will be like an unholy but still beautiful art of a solid mass of
-          flesh moving around its body.
-        </p>
-      </div>
-      <div class="quote-block reveal">
+
+      <p class="reveal">
+        The bigger the spiral of evolution gets, the further it gets from the
+        centre of the main idea — the use for which it was created. Slowly,
+        slowly, it gets so far away that
+        <strong>it does not matter what its original use was</strong>; it twists
+        and gets out of the boundary of human logic.
+      </p>
+
+      <p class="reveal">
+        It loses its relevance, and at a point, it becomes
+        <strong class="highlight-text">
+          sentient enough to make its own decisions </strong
+        >.
+      </p>
+
+      <p class="reveal">
+        There will come such a time when it will stop looking like a tool, and
+        its shape will become
+        <strong>abstract rather than symmetric</strong>
+        for more efficiency. It will be like an unholy but still beautiful art
+        of a solid mass of flesh moving around its body.
+      </p>
+
+      <div class="quote-block">
         <p>
           The pilots or users of such machines should also be broken or less of
           a human than others — as to pilot or use a machine which has surpassed
@@ -1201,15 +509,14 @@
           machine itself.
         </p>
       </div>
-      <div class="reveal">
-        <p>
-          <strong
-            >The stronger the machine, the less of a human a pilot or user
-            becomes.</strong
-          >
-        </p>
-      </div>
-      <div class="quote-block reveal">
+
+      <p class="reveal">
+        <strong>
+          The stronger the machine, the less of a human a pilot or user becomes.
+        </strong>
+      </p>
+
+      <div class="quote-block">
         <p>
           If the machine is a God, the pilot is merely a sacrifice. To control
           the Abyss, one must become a part of it.
@@ -1219,15 +526,19 @@
 
     <div class="section-divider"></div>
 
-    <!-- Questions -->
+    <!-- ═══════════════════════════════════════
+         SECTION VI — QUESTIONS
+    ═══════════════════════════════════════ -->
     <section id="questions" class="section">
       <div class="reveal">
         <div class="section-number">Section VI</div>
         <h2 class="section-title">Unanswered Questions</h2>
       </div>
-      <div class="reveal">
-        <p>There are some questions that I want answers to, too:</p>
-      </div>
+
+      <p class="reveal">
+        There are some questions that I want answers to, too:
+      </p>
+
       <div class="question-item reveal">
         <div class="question-text">
           Is there a "Final Machine", or does the paradox imply that the
@@ -1239,17 +550,43 @@
           // STATUS: UNANSWERED — PERHAPS UNANSWERABLE
         </div>
       </div>
-      <div class="reveal" style="margin-top: 2rem">
-        <p>
-          These questions are very horrifying if they were answered —
-          <strong class="highlight-text">but we might never know</strong>.
-        </p>
-      </div>
+
+      <p class="reveal" style="margin-top: 2rem">
+        These questions are very horrifying if they were answered —
+        <strong class="highlight-text">but we might never know</strong>.
+      </p>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Footer -->
+    <!-- ═══════════════════════════════════════
+         AUTHOR CORNER — Hidden Panel
+    ═══════════════════════════════════════ -->
+    <div class="author-panel" id="author-panel">
+      <button class="author-toggle" id="author-toggle">
+        <span>I</span>
+      </button>
+      <div class="author-content" id="author-content">
+        <div class="author-close" id="author-close">✕</div>
+        <div class="author-label">TRANSMISSION ORIGIN</div>
+        <div class="author-name">I</div>
+        <p class="author-desc">
+          The author of this paradox identifies only as <strong>I</strong>
+          — a mind that observed the spiral and chose to document it before
+          becoming part of it.
+        </p>
+        <div class="author-meta">
+          <span>STATUS: OBSERVER</span>
+          <span>LOCATION: THE CENTRE</span>
+          <span>DATE: 4TH MARCH, 2026</span>
+        </div>
+        <div class="author-warning">"To name the Abyss is to invite it."</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════ -->
     <footer>
       <div class="footer-spiral">◉</div>
       <div class="footer-quote">"The spiral never returns to its centre."</div>
@@ -1257,122 +594,75 @@
       <div class="footer-text">The Apex Dilemma — A Paradox by I — 2026</div>
     </footer>
 
-    <script>
-      // --- SPIRAL BACKGROUND CANVAS ---
-      const canvas = document.getElementById("spiral-bg");
-      const ctx = canvas.getContext("2d");
+    <!-- ═══════════════════════════════════════
+         SOUND TOGGLE BUTTON
+         Controlled by: js/sound.js (coming soon)
+    ═══════════════════════════════════════ -->
+    <button id="sound-toggle" aria-label="Toggle ambient sound">
+      <svg
+        id="sound-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <!-- Speaker body — always visible -->
+        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" opacity="0.8" />
+        <!-- Sound waves — visible when playing -->
+        <g id="sound-waves">
+          <path
+            d="M16.5 8.5c.8.8 1.3 2 1.3 3.5s-.5 2.7-1.3 3.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <path
+            d="M19.5 6c1.5 1.5 2.3 3.6 2.3 6s-.8 4.5-2.3 6"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            fill="none"
+          />
+        </g>
+        <!-- Mute X — visible when muted -->
+        <g id="sound-mute" style="display: none">
+          <line
+            x1="17"
+            y1="9"
+            x2="23"
+            y2="15"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <line
+            x1="23"
+            y1="9"
+            x2="17"
+            y2="15"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </g>
+      </svg>
+    </button>
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
+    <!-- ═══════════════════════════════════════
+         JAVASCRIPT — load order matters
+         Each file does exactly one job
+    ═══════════════════════════════════════ -->
+    <script src="js/spiral.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/nav.js"></script>
 
-      let spiralAngle = 0;
-
-      function drawSpiral() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-
-        ctx.beginPath();
-        for (let i = 0; i < 800; i++) {
-          const angle = 0.1 * i + spiralAngle;
-          const radius = 2 * i * 0.3;
-          const x = cx + radius * Math.cos(angle);
-          const y = cy + radius * Math.sin(angle);
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = `rgba(139, 0, 0, 0.4)`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-
-        spiralAngle += 0.002;
-        requestAnimationFrame(drawSpiral);
-      }
-      drawSpiral();
-
-      // --- PARTICLES ---
-      const particleContainer = document.getElementById("particles");
-      for (let i = 0; i < 30; i++) {
-        const p = document.createElement("div");
-        p.classList.add("particle");
-        p.style.left = Math.random() * 100 + "%";
-        p.style.top = Math.random() * 100 + "%";
-        p.style.animationDelay = Math.random() * 8 + "s";
-        p.style.animationDuration = 6 + Math.random() * 6 + "s";
-        particleContainer.appendChild(p);
-      }
-
-      // --- SCROLL PROGRESS BAR ---
-      const progressBar = document.getElementById("progress-bar");
-      window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const docHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / docHeight) * 100;
-        progressBar.style.width = progress + "%";
-      });
-
-      // --- NAV SCROLL ---
-      const navbar = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 50) {
-          navbar.classList.add("scrolled");
-        } else {
-          navbar.classList.remove("scrolled");
-        }
-      });
-
-      // --- HAMBURGER ---
-      const hamburger = document.getElementById("hamburger");
-      const navLinks = document.getElementById("nav-links");
-
-      hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        navLinks.classList.toggle("open");
-      });
-
-      navLinks.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          hamburger.classList.remove("active");
-          navLinks.classList.remove("open");
-        });
-      });
-
-      // --- SMOOTH SCROLL ---
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute("href"));
-          if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        });
-      });
-
-      // --- REVEAL ON SCROLL ---
-      const revealElements = document.querySelectorAll(
-        ".reveal, .quote-block, .timeline-item, .spiral-visual",
-      );
-
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-            }
-          });
-        },
-        {
-          threshold: 0.15,
-          rootMargin: "0px 0px -50px 0px",
-        },
-      );
-
-      revealElements.forEach((el) => revealObserver.observe(el));
-    </script>
+    <!-- These will be added as we build features -->
+    <script src="js/loader.js"></script>
+    <script src="js/typewriter.js"></script>
+    <script src="js/cursor.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/scale.js"></script>
+    <script src="js/author.js"></script>
+    <script src="js/haptic.js"></script>
   </body>
 </html>
