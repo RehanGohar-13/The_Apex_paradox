@@ -1,14 +1,14 @@
 /* ============================================
-   HERO.CSS
-   Purpose: Hero section and scroll indicator
+   HERO.CSS — POLISHED
+   Purpose: Hero section — unforgettable first impression
    Dependencies: base.css, animations.css
-   Affects: #hero, .hero-content, .scroll-indicator
    ============================================ */
 
 /* --- HERO WRAPPER --- */
 #hero {
   position: relative;
   height: 100vh;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +18,7 @@
   overflow: hidden;
 }
 
-/* Dark vignette over the spiral canvas */
+/* Multi-layer vignette for depth */
 #hero::before {
   content: "";
   position: absolute;
@@ -28,9 +28,23 @@
   height: 100%;
   background: radial-gradient(
     ellipse at center,
-    transparent 30%,
+    transparent 20%,
+    rgba(10, 10, 15, 0.4) 50%,
     var(--abyss) 80%
   );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Bottom gradient fade into content */
+#hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(0deg, var(--abyss) 0%, transparent 100%);
   z-index: 1;
   pointer-events: none;
 }
@@ -39,57 +53,93 @@
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
+  max-width: 800px;
+}
+
+/* --- HORIZONTAL RULE ABOVE TITLE --- */
+.hero-content::before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--glow);
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 0 10px rgba(255, 34, 0, 0.4);
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s forwards;
 }
 
 /* --- AUTHOR LABEL --- */
 .hero-subtitle-top {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--glow);
-  letter-spacing: 8px;
+  letter-spacing: 6px;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   opacity: 0;
   animation: fadeInUp 1s 0.5s forwards;
+  position: relative;
+}
+
+/* Decorative dots flanking the subtitle */
+.hero-subtitle-top::before {
+  content: "◆  ";
+  font-size: 0.5rem;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+.hero-subtitle-top::after {
+  content: "  ◆";
+  font-size: 0.5rem;
+  opacity: 0.5;
+  vertical-align: middle;
 }
 
 /* --- MAIN TITLE --- */
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
   font-weight: 900;
   color: var(--bone);
-  letter-spacing: 6px;
+  letter-spacing: 8px;
   text-transform: uppercase;
-  line-height: 1.1;
+  line-height: 1.05;
   margin-bottom: 1.5rem;
   opacity: 0;
   animation:
     fadeInUp 1s 0.8s forwards,
-    glitchColor 10s 3s infinite;
+    glitchColor 12s 4s infinite;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Red accent line of the title */
+/* Red accent line */
 .hero-title .accent {
   color: var(--glow);
   display: block;
-  text-shadow: var(--glow-text-shadow);
+  text-shadow:
+    0 0 60px rgba(255, 34, 0, 0.35),
+    0 0 120px rgba(255, 34, 0, 0.15),
+    0 2px 30px rgba(0, 0, 0, 0.5);
+  font-size: 1.1em;
+  letter-spacing: 12px;
 }
 
 /* --- TAGLINE --- */
-/* This will be replaced by typewriter effect later */
 .hero-tagline {
   font-family: var(--font-body);
   font-size: 1.3rem;
   font-weight: 300;
   color: var(--pale);
   font-style: italic;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   opacity: 0;
   animation: fadeInUp 1s 1.1s forwards;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   min-height: 2rem;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hero-tagline::before {
@@ -104,21 +154,30 @@
   font-size: 1.5rem;
 }
 
-/* When typewriter is active we remove the quotes
-   from CSS and handle them in JS */
 .hero-tagline.typewriter-mode::before,
 .hero-tagline.typewriter-mode::after {
   content: none;
 }
 
-/* --- META INFO (date / author) --- */
+/* --- META INFO --- */
 .hero-meta {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--rust);
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   opacity: 0;
   animation: fadeInUp 1s 1.4s forwards;
+}
+
+/* Horizontal rule below meta */
+.hero-meta::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--blood);
+  margin: 1.5rem auto 0 auto;
+  opacity: 0.5;
 }
 
 /* --- SCROLL INDICATOR --- */
@@ -138,15 +197,14 @@
 
 .scroll-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
+  font-size: 0.6rem;
+  letter-spacing: 4px;
   color: var(--rust);
   text-transform: uppercase;
   position: relative;
   animation: labelGlitch 6s infinite;
 }
 
-/* Ghost duplicates of the label that flash occasionally */
 .scroll-label::before,
 .scroll-label::after {
   content: attr(data-text);
@@ -168,7 +226,6 @@
   animation: ghostRight 6s infinite;
 }
 
-/* Main chevron container */
 .scroll-chevrons {
   position: relative;
   width: 40px;
@@ -178,7 +235,6 @@
   justify-content: center;
 }
 
-/* The primary chevron */
 .chevron-main {
   font-family: var(--font-mono);
   font-size: 1.6rem;
@@ -191,7 +247,6 @@
   user-select: none;
 }
 
-/* Ghost duplicates that appear and scatter */
 .chevron-ghost {
   font-family: var(--font-mono);
   font-size: 1.6rem;
@@ -221,7 +276,6 @@
   animation: ghostChevron4 7s infinite;
 }
 
-/* Scan line that passes over the indicator */
 .scroll-scanline {
   position: absolute;
   width: 60px;
@@ -242,11 +296,19 @@
   }
 
   .hero-title {
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+  }
+
+  .hero-title .accent {
+    letter-spacing: 6px;
   }
 
   .hero-subtitle-top {
-    letter-spacing: 4px;
-    font-size: 0.75rem;
+    letter-spacing: 3px;
+    font-size: 0.65rem;
+  }
+
+  .hero-content::before {
+    width: 40px;
   }
 }

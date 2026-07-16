@@ -10,6 +10,7 @@
 
 const abyssBtn = document.createElement("button");
 abyssBtn.id = "abyss-toggle";
+abyssBtn.className = "fixed-btn";
 abyssBtn.setAttribute("aria-label", "Toggle Abyss Mode");
 abyssBtn.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -245,112 +245,6 @@
   }
 }
 
-/* --- SOUND TOGGLE BUTTON --- */
-#sound-toggle {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 998;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(139, 0, 0, 0.3);
-  background: rgba(10, 10, 15, 0.85);
-  color: var(--rust);
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition:
-    border-color var(--transition-fast),
-    color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast);
-  backdrop-filter: blur(5px);
-}
-
-#sound-toggle svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-#sound-toggle:hover {
-  border-color: var(--glow);
-  color: var(--glow);
-  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
-  background: rgba(139, 0, 0, 0.1);
-}
-
-/* Active state when sound is playing */
-#sound-toggle.active {
-  border-color: var(--glow);
-  color: var(--glow);
-  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
-}
-
-/* Pulse animation when active */
-#sound-toggle.active::after {
-  content: "";
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 8px;
-  height: 8px;
-  background: var(--glow);
-  border-radius: 50%;
-  animation: soundPulse 2s infinite;
-}
-
-@keyframes soundPulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(0.6);
-  }
-}
-
-/* Sound wave bars animation when playing */
-#sound-toggle.active #sound-waves path {
-  animation: waveFlicker 3s infinite ease-in-out;
-}
-
-#sound-toggle.active #sound-waves path:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-@keyframes waveFlicker {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  30% {
-    opacity: 0.3;
-  }
-  60% {
-    opacity: 0.8;
-  }
-}
-
-@media (max-width: 768px) {
-  #sound-toggle {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 40px;
-    height: 40px;
-  }
-
-  #sound-toggle svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
 /* --- SOUND MESSAGE OVERLAY --- */
 #sound-message {
   position: fixed;
@@ -973,60 +867,190 @@ body.abyss-mode .fog-layer {
   );
 }
 
-/* --- ABYSS MODE TOGGLE BUTTON --- */
-#abyss-toggle {
+/* --- UNIFIED BUTTON SYSTEM --- */
+/* All fixed buttons share the same base style */
+.fixed-btn {
   position: fixed;
-  bottom: 2rem;
-  left: 5.5rem;
   z-index: 998;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(139, 0, 0, 0.3);
-  background: rgba(10, 10, 15, 0.85);
+  width: 42px;
+  height: 42px;
+  border: var(--border-subtle);
+  background: rgba(10, 10, 15, 0.9);
   color: var(--rust);
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   transition:
-    border-color var(--transition-fast),
-    color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast);
-  backdrop-filter: blur(5px);
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+  backdrop-filter: blur(8px);
 }
 
-#abyss-toggle svg {
+.fixed-btn svg {
   width: 18px;
   height: 18px;
+  display: block;
 }
 
-#abyss-toggle:hover {
+.fixed-btn:hover {
   border-color: var(--glow);
   color: var(--glow);
-  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
-  background: rgba(139, 0, 0, 0.1);
+  box-shadow: var(--shadow-glow);
+  background: rgba(139, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
-#abyss-toggle.active {
+.fixed-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.fixed-btn.active {
   border-color: var(--glow);
   color: var(--glow);
-  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+/* --- SOUND TOGGLE --- */
+#sound-toggle {
+  bottom: 2rem;
+  right: 2rem;
+}
+
+#sound-toggle.active::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  background: var(--glow);
+  border-radius: 50%;
+  animation: soundPulse 2s infinite;
+}
+
+@keyframes soundPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+}
+
+#sound-toggle.active #sound-waves path {
+  animation: waveFlicker 3s infinite ease-in-out;
+}
+
+#sound-toggle.active #sound-waves path:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+@keyframes waveFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.8;
+  }
+}
+
+/* --- ABYSS MODE TOGGLE --- */
+#abyss-toggle {
+  bottom: 2rem;
+  left: 5.5rem;
+}
+
+/* --- AUTHOR TOGGLE --- */
+.author-panel {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 998;
+}
+
+.author-toggle {
+  width: 42px;
+  height: 42px;
+  border: var(--border-subtle);
+  background: rgba(10, 10, 15, 0.9);
+  color: var(--rust);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.author-toggle span {
+  font-style: italic;
+}
+
+.author-toggle:hover {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: var(--shadow-glow);
+  background: rgba(139, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.author-toggle:active {
+  transform: translateY(0) scale(0.97);
 }
 
 @media (max-width: 768px) {
-  #abyss-toggle {
-    bottom: 1.5rem;
-    left: 5rem;
-    width: 40px;
-    height: 40px;
+  .fixed-btn {
+    width: 38px;
+    height: 38px;
   }
 
-  #abyss-toggle svg {
+  .fixed-btn svg {
     width: 16px;
     height: 16px;
+  }
+
+  #sound-toggle {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  #abyss-toggle {
+    bottom: 1.5rem;
+    left: 4.5rem;
+  }
+
+  .author-panel {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .author-toggle {
+    width: 38px;
+    height: 38px;
   }
 }
 
