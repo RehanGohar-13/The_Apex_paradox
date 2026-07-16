@@ -222,3 +222,57 @@ const dividerObserver = new IntersectionObserver(
 );
 
 dividers.forEach((divider) => dividerObserver.observe(divider));
+
+// ── BACKGROUND COLOR SHIFT ──────────────────
+
+/**
+ * As the user scrolls deeper the background
+ * gradually shifts from pure dark to a deep
+ * blood red. Like descending into the Abyss.
+ *
+ * At 0% scroll:   #0a0a0f (abyss black)
+ * At 50% scroll:  slight red tint
+ * At 100% scroll: #1a0505 (deep blood)
+ */
+function updateBackgroundShift() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = Math.min(scrollTop / docHeight, 1);
+
+  // Base color: rgb(10, 10, 15)
+  // Target color: rgb(26, 5, 5)
+  const r = Math.round(10 + 16 * progress);
+  const g = Math.round(10 - 5 * progress);
+  const b = Math.round(15 - 10 * progress);
+
+  document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+  // Also shift the spiral canvas opacity
+  // Gets slightly more visible as you scroll
+  const canvas = document.getElementById("spiral-bg");
+  if (canvas) {
+    canvas.style.opacity = 0.15 + progress * 0.1;
+  }
+
+  // Section dividers get brighter
+  const dividers = document.querySelectorAll(".section-divider");
+  const glowIntensity = 0.3 + progress * 0.7;
+  dividers.forEach((d) => {
+    d.style.background = `linear-gradient(
+            90deg,
+            transparent,
+            rgba(139, 0, 0, ${glowIntensity}),
+            transparent
+        )`;
+  });
+
+  // Update section divider diamond backgrounds
+  // so they always match the current body color
+  const diamonds = document.querySelectorAll(".section-divider");
+  const bgColor = `rgb(${r}, ${g}, ${b})`;
+  diamonds.forEach((d) => {
+    d.style.setProperty("--divider-bg", bgColor);
+  });
+}
+
+window.addEventListener("scroll", updateBackgroundShift, { passive: true });

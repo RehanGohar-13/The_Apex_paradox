@@ -260,28 +260,111 @@ function initSound() {
   // ── AUTO START ───────────────────────────
 
   /**
-   * Start the drone automatically after the loader
-   * finishes. Uses a click listener as a fallback
-   * because browsers block autoplay without interaction.
+   * The AudioContext MUST be created directly
+   * inside a user gesture event handler.
+   * Not in a setTimeout, not in a Promise,
+   * not in an observer callback — DIRECTLY.
+   *
+   * Strategy: Attach a single handler that
+   * creates everything inline on first gesture.
    */
-  function autoStart() {
+
+  let loaderDone = false;
+
+  function onFirstGesture() {
     if (hasStarted) return;
+
+    // If loader has not finished yet just mark
+    // that we have a gesture ready and wait
+    if (!loaderDone) {
+      gestureReady = true;
+      return;
+    }
+
     hasStarted = true;
 
-    fadeIn(3, 0.8);
-    document.getElementById("sound-waves").style.display = "";
-    document.getElementById("sound-mute").style.display = "none";
+    // CREATE AUDIO CONTEXT RIGHT HERE
+    // Inside the direct gesture handler
+    if (!audioCtx) {
+      createDrone();
+    }
+
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+
+    // Fade in
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 3);
+
+    isPlaying = true;
+
+    const wavesEl = document.getElementById("sound-waves");
+    const muteEl = document.getElementById("sound-mute");
+    if (wavesEl) wavesEl.style.display = "";
+    if (muteEl) muteEl.style.display = "none";
     soundBtn.classList.add("active");
+
+    // Cleanup listeners
+    removeGestureListeners();
   }
 
-  // Try to start after loader
+  let gestureReady = false;
+
+  function onLoaderDone() {
+    loaderDone = true;
+
+    // If user already gestured before loader finished
+    // start now
+    if (gestureReady) {
+      // We need another gesture since the old one expired
+      // The next click/scroll will trigger it
+    }
+  }
+
+  // All possible gesture events
+  function addGestureListeners() {
+    const events = [
+      "click",
+      "mousedown",
+      "touchstart",
+      "touchend",
+      "keydown",
+      "scroll",
+    ];
+    events.forEach((evt) => {
+      document.addEventListener(evt, onFirstGesture, {
+        capture: true,
+        passive: true,
+      });
+    });
+  }
+
+  function removeGestureListeners() {
+    const events = [
+      "click",
+      "mousedown",
+      "touchstart",
+      "touchend",
+      "keydown",
+      "scroll",
+    ];
+    events.forEach((evt) => {
+      document.removeEventListener(evt, onFirstGesture, { capture: true });
+    });
+  }
+
+  addGestureListeners();
+
+  // Watch for loader
   const loader = document.getElementById("loader");
 
   if (loader) {
     const loaderObserver = new MutationObserver(() => {
       if (loader.classList.contains("hidden") || !document.contains(loader)) {
         loaderObserver.disconnect();
-        setTimeout(autoStart, 500);
+        onLoaderDone();
       }
     });
 
@@ -292,24 +375,11 @@ function initSound() {
 
     if (loader.classList.contains("hidden")) {
       loaderObserver.disconnect();
-      setTimeout(autoStart, 500);
+      onLoaderDone();
     }
   } else {
-    window.addEventListener("load", () => {
-      setTimeout(autoStart, 1000);
-    });
+    onLoaderDone();
   }
-
-  // Fallback — if autoplay was blocked start on first click anywhere
-  document.addEventListener(
-    "click",
-    () => {
-      if (!hasStarted) {
-        autoStart();
-      }
-    },
-    { once: false },
-  );
 
   // ── BUTTON CLICK HANDLER ─────────────────
 

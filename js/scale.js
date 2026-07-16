@@ -89,4 +89,47 @@ function initScale() {
   );
 
   scaleObserver.observe(apexScale);
+
+  // ── SECRET VOID LINK ─────────────────────
+
+  /**
+   * Clicking the final ??? point takes the user
+   * to the hidden void page.
+   */
+  const finalPoint = document.querySelector(".scale-point.final-point");
+
+  if (finalPoint) {
+    finalPoint.style.cursor = "pointer";
+
+    finalPoint.addEventListener("click", () => {
+      // Glitch the screen briefly before navigating
+      document.body.style.animation = "none";
+      document.body.style.transition = "filter 0.3s ease";
+      document.body.style.filter = "hue-rotate(90deg) brightness(2)";
+
+      setTimeout(() => {
+        document.body.style.filter = "invert(1)";
+      }, 150);
+
+      setTimeout(() => {
+        document.body.style.filter = "none";
+        window.location.href = "void.html";
+      }, 400);
+    });
+
+    // Also handle touch
+    finalPoint.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      document.body.style.transition = "filter 0.3s ease";
+      document.body.style.filter = "hue-rotate(90deg) brightness(2)";
+
+      setTimeout(() => {
+        document.body.style.filter = "invert(1)";
+      }, 150);
+
+      setTimeout(() => {
+        window.location.href = "void.html";
+      }, 400);
+    });
+  }
 }

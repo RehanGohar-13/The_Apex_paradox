@@ -624,3 +624,615 @@
     left: 0;
   }
 }
+
+/* --- KONAMI CODE OVERLAY --- */
+#konami-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  background: var(--abyss);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+  overflow: hidden;
+}
+
+#konami-overlay.visible {
+  opacity: 1;
+}
+
+#konami-overlay.closing {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Noise texture on overlay */
+#konami-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Pulsing red glow */
+#konami-overlay::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(139, 0, 0, 0.15) 0%,
+    transparent 70%
+  );
+  animation: voidPulse 4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes voidPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+.konami-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+/* Glitch title */
+.konami-glitch-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  color: var(--glow);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  position: relative;
+  animation: konamiGlitch 5s infinite;
+  text-shadow: 0 0 30px rgba(255, 34, 0, 0.5);
+}
+
+.konami-glitch-text::before,
+.konami-glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.konami-glitch-text::before {
+  color: #ff0000;
+  animation: konamiGhostLeft 5s infinite;
+  z-index: -1;
+}
+
+.konami-glitch-text::after {
+  color: #0044ff;
+  animation: konamiGhostRight 5s infinite;
+  z-index: -1;
+}
+
+@keyframes konamiGlitch {
+  0%,
+  85%,
+  100% {
+    transform: translate(0);
+  }
+  87% {
+    transform: translate(-3px, 2px);
+  }
+  89% {
+    transform: translate(3px, -1px);
+  }
+  91% {
+    transform: translate(-2px, -2px);
+  }
+  93% {
+    transform: translate(2px, 1px);
+  }
+}
+
+@keyframes konamiGhostLeft {
+  0%,
+  85%,
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  88% {
+    opacity: 0.8;
+    transform: translateX(-5px);
+  }
+  92% {
+    opacity: 0.4;
+    transform: translateX(-8px);
+  }
+}
+
+@keyframes konamiGhostRight {
+  0%,
+  85%,
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  88% {
+    opacity: 0.6;
+    transform: translateX(5px);
+  }
+  92% {
+    opacity: 0.3;
+    transform: translateX(8px);
+  }
+}
+
+.konami-sub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--rust);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  animation: flicker 4s infinite;
+}
+
+.konami-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glow), transparent);
+  margin: 2rem auto;
+}
+
+/* Messages appear one by one */
+.konami-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.konami-messages span {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--pale);
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.konami-messages span.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Spinning spiral */
+.konami-spiral {
+  font-size: 3rem;
+  color: var(--glow);
+  animation: spin 10s linear infinite;
+  margin: 2rem 0;
+  text-shadow: 0 0 20px rgba(255, 34, 0, 0.5);
+}
+
+/* Close hint */
+.konami-close {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.konami-close.show {
+  opacity: 1;
+}
+
+.konami-close-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--rust);
+  letter-spacing: 3px;
+  animation: blink 2s infinite;
+}
+
+@media (max-width: 768px) {
+  .konami-glitch-text {
+    letter-spacing: 3px;
+  }
+
+  .konami-sub {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+  }
+
+  .konami-messages span {
+    font-size: 0.9rem;
+  }
+}
+
+/* --- FOG / MIST EFFECT --- */
+#fog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.fog-layer {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 0, 0, 0.15) 0%,
+    rgba(139, 0, 0, 0.05) 40%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  animation: fogDrift linear infinite alternate;
+  will-change: transform;
+}
+
+@keyframes fogDrift {
+  0% {
+    left: -20%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Reverse direction for alternate layers */
+.fog-layer:nth-child(even) {
+  animation-direction: alternate-reverse;
+}
+
+/* In abyss mode fog gets denser */
+body.abyss-mode .fog-layer {
+  opacity: 0.08 !important;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 0, 0, 0.25) 0%,
+    rgba(139, 0, 0, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+/* --- ABYSS MODE TOGGLE BUTTON --- */
+#abyss-toggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 5.5rem;
+  z-index: 998;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(10, 10, 15, 0.85);
+  color: var(--rust);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  backdrop-filter: blur(5px);
+}
+
+#abyss-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+#abyss-toggle:hover {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  background: rgba(139, 0, 0, 0.1);
+}
+
+#abyss-toggle.active {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  #abyss-toggle {
+    bottom: 1.5rem;
+    left: 5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  #abyss-toggle svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* --- READER'S LOGBOOK --- */
+#logbook-indicator {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 997;
+  background: rgba(10, 10, 15, 0.95);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-right: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(5px);
+  border-radius: 4px 0 0 4px;
+  overflow: hidden;
+}
+
+#logbook-indicator:hover {
+  border-color: rgba(255, 34, 0, 0.5);
+  box-shadow: -4px 0 15px rgba(255, 34, 0, 0.08);
+}
+
+/* ── COLLAPSED STATE ──────────────────────── */
+#logbook-indicator:not(.expanded) {
+  width: 36px;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+/* Hide detail elements when collapsed */
+#logbook-indicator:not(.expanded) .logbook-dots,
+#logbook-indicator:not(.expanded) .logbook-status,
+#logbook-indicator:not(.expanded) .logbook-title {
+  display: none;
+}
+
+#logbook-indicator:not(.expanded) .logbook-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+/* Percentage in collapsed — displayed vertically */
+#logbook-indicator:not(.expanded) .logbook-percent {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--glow);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+}
+
+/* Vertical progress bar when collapsed */
+#logbook-indicator:not(.expanded) .logbook-bar-track {
+  width: 2px;
+  height: 60px;
+  margin: 0;
+  position: relative;
+  background: rgba(139, 0, 0, 0.2);
+}
+
+#logbook-indicator:not(.expanded) .logbook-bar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(0deg, var(--blood), var(--glow));
+  box-shadow: 0 0 6px rgba(255, 34, 0, 0.3);
+  transition: height 0.5s ease;
+}
+
+/* ── EXPANDED STATE ───────────────────────── */
+#logbook-indicator.expanded {
+  width: 220px;
+  padding: 1rem;
+}
+
+#logbook-indicator.expanded .logbook-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  white-space: nowrap;
+}
+
+#logbook-indicator.expanded .logbook-percent {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+}
+
+#logbook-indicator.expanded .logbook-bar-track {
+  width: 100%;
+  height: 2px;
+  margin: 0 0 0.6rem 0;
+  position: relative;
+}
+
+#logbook-indicator.expanded .logbook-bar-fill {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blood), var(--glow));
+  transition: width 0.5s ease;
+}
+
+.logbook-title {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  color: var(--glow);
+  opacity: 0.7;
+}
+
+.logbook-percent {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--bone);
+}
+
+/* Dots list */
+.logbook-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.logbook-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logbook-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--rust);
+  background: transparent;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.logbook-dot.read::before {
+  background: var(--glow);
+  border-color: var(--glow);
+  box-shadow: 0 0 6px rgba(255, 34, 0, 0.4);
+}
+
+.logbook-dot-label {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  color: var(--rust);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logbook-dot.read .logbook-dot-label {
+  color: var(--pale);
+}
+
+.logbook-status {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  color: var(--rust);
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  #logbook-indicator {
+    top: auto;
+    bottom: 5rem;
+    right: 0;
+    transform: none;
+  }
+
+  #logbook-indicator.expanded {
+    width: 190px;
+  }
+
+  #logbook-indicator:not(.expanded) {
+    width: 32px;
+    padding: 0.8rem 0;
+  }
+
+  #logbook-indicator:not(.expanded) .logbook-bar-track {
+    height: 40px;
+  }
+
+  #logbook-indicator:not(.expanded) .logbook-percent {
+    font-size: 0.55rem;
+  }
+}
+
+/* --- BREACH FLASH --- */
+#breach-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(139, 0, 0, 0.08) 0%,
+    rgba(255, 34, 0, 0.03) 50%,
+    rgba(139, 0, 0, 0.08) 100%
+  );
+  mix-blend-mode: screen;
+}
+
+#breach-flash.active {
+  opacity: 1;
+  animation: breachPulse 0.2s ease-out;
+}
+
+@keyframes breachPulse {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

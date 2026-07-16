@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>??? — The Apex Dilemma</title>
+    <meta name="description" content="You found the void." />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <style>
+      /* ── VOID PAGE STYLES ─────────────── */
+
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        text-align: center;
+        padding: 2rem;
+        overflow: hidden;
+      }
+
+      /* Pulsing red background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(139, 0, 0, 0.08) 0%,
+          transparent 70%
+        );
+        z-index: 0;
+        animation: voidPulse 6s infinite ease-in-out;
+      }
+
+      @keyframes voidPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+      }
+
+      .void-container {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+        padding-bottom: 6rem;
+      }
+
+      /* The ??? title */
+      .void-title {
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 10vw, 8rem);
+        font-weight: 900;
+        color: var(--glow);
+        letter-spacing: 10px;
+        margin-bottom: 2rem;
+        text-shadow:
+          0 0 40px rgba(255, 34, 0, 0.5),
+          0 0 80px rgba(255, 34, 0, 0.2);
+        animation:
+          voidGlitch 8s infinite,
+          fadeInUp 1s 0.5s forwards;
+        opacity: 0;
+      }
+
+      @keyframes voidGlitch {
+        0%,
+        88%,
+        100% {
+          transform: translate(0);
+        }
+        90% {
+          transform: translate(-4px, 2px);
+        }
+        92% {
+          transform: translate(4px, -2px);
+        }
+        94% {
+          transform: translate(-2px, -3px);
+        }
+        96% {
+          transform: translate(3px, 3px);
+        }
+      }
+
+      .void-subtitle {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--glow);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeInUp 1s 1s forwards;
+      }
+
+      .void-text {
+        font-family: var(--font-body);
+        font-size: 1.1rem;
+        line-height: 2;
+        color: var(--pale);
+        font-weight: 300;
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: fadeInUp 1s 1.5s forwards;
+      }
+
+      .void-text strong {
+        color: var(--bone);
+      }
+
+      .void-text em {
+        color: var(--glow);
+        font-style: normal;
+      }
+
+      .void-question {
+        font-family: var(--font-display);
+        font-size: clamp(1rem, 3vw, 1.4rem);
+        color: var(--bone);
+        font-style: italic;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeInUp 1s 2s forwards;
+      }
+
+      .void-divider {
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--glow),
+          transparent
+        );
+        margin: 0 auto 3rem auto;
+        opacity: 0;
+        animation: fadeInUp 1s 2.3s forwards;
+      }
+
+      /* Messages that type in sequence */
+      .void-messages {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--rust);
+        letter-spacing: 2px;
+        line-height: 2.5;
+        opacity: 0;
+        animation: fadeInUp 1s 2.5s forwards;
+      }
+
+      .void-messages span {
+        display: block;
+        opacity: 0;
+        animation: fadeInUp 0.6s forwards;
+      }
+
+      .void-messages span:nth-child(1) {
+        animation-delay: 3s;
+      }
+      .void-messages span:nth-child(2) {
+        animation-delay: 4s;
+      }
+      .void-messages span:nth-child(3) {
+        animation-delay: 5s;
+      }
+      .void-messages span:nth-child(4) {
+        animation-delay: 6.5s;
+      }
+      .void-messages span:nth-child(5) {
+        animation-delay: 8s;
+      }
+      .void-messages span:nth-child(6) {
+        animation-delay: 10s;
+      }
+
+      /* Back link */
+      .void-back {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--rust);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-decoration: none;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        left: auto;
+        transform: none;
+        transition:
+          color var(--transition-fast),
+          border-color var(--transition-fast),
+          box-shadow var(--transition-fast);
+        opacity: 0;
+        animation: fadeInUp 1s 12s forwards;
+        z-index: 10;
+        background: rgba(10, 10, 15, 0.95);
+        padding: 1rem 1.5rem;
+        border: 1px solid rgba(139, 0, 0, 0.3);
+        white-space: nowrap;
+        backdrop-filter: blur(5px);
+      }
+
+      .void-back:hover {
+        color: var(--glow);
+        border-color: var(--glow);
+        box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+      }
+
+      @media (max-width: 768px) {
+        .void-back {
+          bottom: 1.5rem;
+          right: 1.5rem;
+          font-size: 0.6rem;
+          padding: 0.8rem 1.2rem;
+        }
+      }
+
+      /* Noise overlay */
+      .void-noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.03;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+      }
+
+      /* Floating particles for this page */
+      .void-particle {
+        position: fixed;
+        width: 2px;
+        height: 2px;
+        background: var(--glow);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        animation: drift 10s infinite ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="void-noise"></div>
+
+    <div class="void-container">
+      <h1 class="void-title">???</h1>
+
+      <div class="void-subtitle">THE FINAL POINT ON THE SCALE</div>
+
+      <p class="void-text">
+        You clicked the point that has no name. The point beyond the
+        <em>Demiurge</em>, beyond the organic, beyond the twisted flesh of
+        machines that surpassed their creators. This is the point where the
+        spiral <strong>consumes itself</strong>.
+      </p>
+
+      <div class="void-question">
+        Does a machine exist that is so powerful it devours the concept of
+        "machines" entirely — returning everything to a state of nothingness?
+      </div>
+
+      <div class="void-divider"></div>
+
+      <div class="void-messages">
+        <span>> SCANNING FOR THE FINAL MACHINE...</span>
+        <span>> NO DATA FOUND.</span>
+        <span>> EXPANDING SEARCH BEYOND KNOWN PARAMETERS...</span>
+        <span>> ERROR: SEARCH EXCEEDED THE BOUNDARY OF LOGIC.</span>
+        <span>> THE ANSWER EXISTS OUTSIDE THIS SYSTEM.</span>
+        <span>> CONNECTION TERMINATED BY SOURCE.</span>
+      </div>
+    </div>
+
+    <a href="index.html" class="void-back">Return to the spiral</a>
+
+    <!-- Particles -->
+    <script>
+      const body = document.body;
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement("div");
+        p.classList.add("void-particle");
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.top = `${Math.random() * 100}%`;
+        p.style.animationDelay = `${Math.random() * 10}s`;
+        p.style.animationDuration = `${8 + Math.random() * 8}s`;
+        body.appendChild(p);
+      }
+    </script>
+  </body>
+</html>

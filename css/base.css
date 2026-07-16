@@ -108,3 +108,113 @@ body {
 .text-display {
   font-family: var(--font-display);
 }
+
+/* ── ABYSS MODE OVERRIDES ─────────────────── */
+/* Everything gets darker, redder, barely visible */
+
+body.abyss-mode {
+  background: #020202 !important;
+  color: rgba(200, 184, 168, 0.6);
+}
+
+body.abyss-mode .section p {
+  color: rgba(200, 184, 168, 0.5);
+}
+
+body.abyss-mode .section p strong {
+  color: rgba(232, 221, 208, 0.7);
+}
+
+body.abyss-mode .highlight-text {
+  color: rgba(255, 34, 0, 0.7) !important;
+}
+
+body.abyss-mode .section-title {
+  color: rgba(232, 221, 208, 0.6);
+}
+
+body.abyss-mode .section-title::after {
+  opacity: 0.5;
+}
+
+body.abyss-mode .section-number {
+  opacity: 0.4;
+}
+
+body.abyss-mode .hero-title {
+  color: rgba(232, 221, 208, 0.5);
+}
+
+body.abyss-mode .hero-title .accent {
+  color: rgba(255, 34, 0, 0.6);
+  text-shadow: 0 0 40px rgba(255, 34, 0, 0.2);
+}
+
+body.abyss-mode .hero-tagline {
+  color: rgba(200, 184, 168, 0.4);
+}
+
+body.abyss-mode .quote-block {
+  border-left-color: rgba(255, 34, 0, 0.4);
+  background: linear-gradient(90deg, rgba(139, 0, 0, 0.04), transparent);
+}
+
+body.abyss-mode .quote-block p {
+  color: rgba(232, 221, 208, 0.5) !important;
+}
+
+body.abyss-mode .comparison-card.order {
+  background: rgba(42, 42, 53, 0.2);
+  border-color: rgba(200, 184, 168, 0.05);
+}
+
+body.abyss-mode .comparison-card.chaos {
+  background: rgba(74, 26, 26, 0.15);
+  border-color: rgba(255, 34, 0, 0.1);
+}
+
+body.abyss-mode .timeline::before {
+  opacity: 0.4;
+}
+
+body.abyss-mode .timeline-item::before {
+  opacity: 0.5;
+}
+
+body.abyss-mode nav {
+  background: rgba(2, 2, 2, 0.95);
+}
+
+body.abyss-mode nav.scrolled {
+  background: rgba(2, 2, 2, 0.98);
+  box-shadow: 0 2px 20px rgba(139, 0, 0, 0.15);
+}
+
+body.abyss-mode footer {
+  border-top-color: rgba(139, 0, 0, 0.1);
+}
+
+body.abyss-mode .section-divider {
+  opacity: 0.4;
+}
+
+body.abyss-mode #spiral-bg {
+  opacity: 0.06 !important;
+}
+
+body.abyss-mode .particle {
+  opacity: 0 !important;
+}
+
+body.abyss-mode .scale-dot {
+  opacity: 0.6;
+}
+
+body.abyss-mode .scale-label {
+  opacity: 0.4;
+}
+
+body.abyss-mode .scale-info {
+  background: rgba(2, 2, 2, 0.95);
+  border-color: rgba(139, 0, 0, 0.1);
+}

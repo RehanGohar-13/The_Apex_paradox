@@ -92,8 +92,15 @@
   transform: translate(-50%, -50%);
   color: var(--glow);
   font-size: 0.8rem;
-  background: var(--abyss);
+  background: var(--divider-bg, var(--abyss));
   padding: 0 1rem;
+  z-index: 1;
+}
+
+/* Last divider before footer — no diamond needed
+   because the background mismatch is visible here */
+.section-divider.final-divider::before {
+  content: none;
 }
 
 /* --- SPIRAL VISUAL --- */
@@ -108,6 +115,16 @@
   max-width: 350px;
   width: 100%;
   height: auto;
+  animation: spiralRotate 60s linear infinite;
+}
+
+@keyframes spiralRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* The spiral path draws itself when .visible is added */
@@ -374,6 +391,65 @@ footer {
   opacity: 0.6;
 }
 
+/* --- GLOSSARY --- */
+.glossary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.glossary-item {
+  padding: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(42, 42, 53, 0.3),
+    rgba(42, 42, 53, 0.1)
+  );
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.glossary-item:hover {
+  border-color: rgba(255, 34, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 34, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.glossary-term {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--glow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.glossary-def {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--pale);
+  font-weight: 300;
+}
+
+/* Abyss mode */
+body.abyss-mode .glossary-item {
+  background: rgba(42, 42, 53, 0.1);
+  border-color: rgba(139, 0, 0, 0.08);
+}
+
+body.abyss-mode .glossary-term {
+  color: rgba(255, 34, 0, 0.6);
+}
+
+body.abyss-mode .glossary-def {
+  color: rgba(200, 184, 168, 0.4);
+}
+
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   .section {
@@ -407,6 +483,10 @@ footer {
     position: relative;
     bottom: auto;
     margin-top: 1rem;
+  }
+
+  .glossary-grid {
+    grid-template-columns: 1fr;
   }
 }
 
