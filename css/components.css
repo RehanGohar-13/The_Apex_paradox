@@ -153,10 +153,40 @@
 }
 
 /* --- CUSTOM CURSOR --- */
-/* Only show on devices that have a fine pointer (mouse) */
 @media (pointer: fine) {
-  body {
-    cursor: none;
+  /* Hide ALL cursors everywhere — no hand, no arrow, nothing */
+  *,
+  *::before,
+  *::after,
+  a,
+  a *,
+  button,
+  button *,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  [onclick],
+  .scale-point,
+  .scale-point *,
+  .comparison-card,
+  .glossary-item,
+  .corollary-item,
+  .question-item,
+  .nav-logo,
+  .hamburger,
+  .hamburger *,
+  #sound-toggle,
+  #sound-toggle *,
+  #abyss-toggle,
+  #abyss-toggle *,
+  #logbook-indicator,
+  #logbook-indicator *,
+  .author-toggle,
+  .author-toggle *,
+  .author-close,
+  .nav-links a {
+    cursor: none !important;
   }
 
   .custom-cursor {
@@ -167,19 +197,23 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 99999;
+    top: 0;
+    left: 0;
     transform: translate(-50%, -50%);
     transition:
-      transform 0.1s ease,
       width 0.2s ease,
       height 0.2s ease,
+      background 0.2s ease,
+      border 0.2s ease,
       opacity 0.2s ease;
     box-shadow:
       0 0 8px var(--glow),
       0 0 20px rgba(255, 34, 0, 0.4);
     mix-blend-mode: screen;
+    will-change: left, top, transform;
   }
 
-  /* Expanded state when hovering links */
+  /* Expanded ring state when hovering interactive elements */
   .custom-cursor.expanded {
     width: 30px;
     height: 30px;
@@ -188,7 +222,7 @@
     box-shadow: 0 0 15px var(--glow);
   }
 
-  /* Trail dot left behind cursor */
+  /* Trail dot */
   .cursor-trail {
     position: fixed;
     width: 4px;
@@ -199,6 +233,15 @@
     z-index: 99998;
     transform: translate(-50%, -50%);
     animation: trailFade 0.6s ease forwards;
+    will-change: opacity, transform;
+  }
+}
+
+/* On touch devices hide custom cursor completely */
+@media (pointer: coarse) {
+  .custom-cursor,
+  .cursor-trail {
+    display: none !important;
   }
 }
 
@@ -1235,4 +1278,78 @@ body.abyss-mode .fog-layer {
   100% {
     opacity: 0;
   }
+}
+
+/* --- MOBILE TOUCH STATES --- */
+/* These replace hover effects on touch devices */
+
+/* Active scale point on mobile */
+.scale-point.mobile-active .scale-dot {
+  background: var(--glow);
+  border-color: var(--glow);
+  box-shadow:
+    0 0 12px var(--glow),
+    0 0 25px rgba(255, 34, 0, 0.3);
+  transform: scale(1.4);
+}
+
+.scale-point.mobile-active .scale-label {
+  color: var(--glow);
+}
+
+/* Active glossary item on mobile */
+.glossary-item.mobile-active {
+  border-color: rgba(255, 34, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 34, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Active corollary on mobile */
+.corollary-item.mobile-active {
+  background: rgba(139, 0, 0, 0.03);
+}
+
+.corollary-item.mobile-active .corollary-number {
+  opacity: 0.7;
+}
+
+.corollary-item.mobile-active .corollary-title {
+  color: var(--glow);
+}
+
+/* Diagram node pulse on tap */
+.diagram-node.mobile-pulse {
+  border-color: rgba(255, 34, 0, 0.4) !important;
+  box-shadow: 0 0 15px rgba(255, 34, 0, 0.08) !important;
+  transform: translateY(-3px) !important;
+}
+
+.diagram-node.mobile-pulse .diagram-node-icon {
+  transform: scale(1.2);
+}
+
+/* Active comparison card on mobile */
+.comparison-card.mobile-active {
+  transform: translateY(-4px);
+}
+
+.comparison-card.order.mobile-active {
+  box-shadow: 0 8px 30px rgba(200, 184, 168, 0.08);
+}
+
+.comparison-card.chaos.mobile-active {
+  box-shadow: 0 8px 30px rgba(255, 34, 0, 0.1);
+}
+
+/* Mobile-specific layout adjustments */
+body.is-mobile .scale-info p {
+  font-size: 0.85rem !important;
+}
+
+/* Ensure buttons look tappable on mobile */
+body.is-mobile #sound-toggle,
+body.is-mobile #abyss-toggle,
+body.is-mobile .author-toggle {
+  min-width: 44px;
+  min-height: 44px;
 }

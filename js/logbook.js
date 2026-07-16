@@ -15,6 +15,7 @@ const SECTIONS = [
   "explanation",
   "example",
   "notes",
+  "corollaries",
   "glossary",
   "questions",
 ];
@@ -26,6 +27,7 @@ const SECTION_LABELS = {
   explanation: "EXPLANATION",
   example: "EXAMPLE",
   notes: "NOTES",
+  corollaries: "COROLLARIES",
   glossary: "GLOSSARY",
   questions: "QUESTIONS",
 };

@@ -450,6 +450,205 @@ body.abyss-mode .glossary-def {
   color: rgba(200, 184, 168, 0.4);
 }
 
+/* --- COROLLARIES --- */
+.corollaries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 2rem;
+}
+
+.corollary-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.12);
+  transition: background var(--transition-fast);
+}
+
+.corollary-item:last-child {
+  border-bottom: none;
+}
+
+.corollary-item:hover {
+  background: rgba(139, 0, 0, 0.03);
+}
+
+/* Large roman numeral */
+.corollary-number {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--glow);
+  opacity: 0.3;
+  min-width: 50px;
+  text-align: center;
+  line-height: 1;
+  padding-top: 0.2rem;
+  transition: opacity var(--transition-fast);
+  user-select: none;
+}
+
+.corollary-item:hover .corollary-number {
+  opacity: 0.7;
+}
+
+.corollary-content {
+  flex: 1;
+}
+
+.corollary-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bone);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  transition: color var(--transition-fast);
+}
+
+.corollary-item:hover .corollary-title {
+  color: var(--glow);
+}
+
+.corollary-text {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--pale);
+  font-weight: 300;
+  margin: 0;
+}
+
+/* Abyss mode */
+body.abyss-mode .corollary-item {
+  border-bottom-color: rgba(139, 0, 0, 0.06);
+}
+
+body.abyss-mode .corollary-number {
+  opacity: 0.15;
+}
+
+body.abyss-mode .corollary-title {
+  color: rgba(232, 221, 208, 0.5);
+}
+
+body.abyss-mode .corollary-text {
+  color: rgba(200, 184, 168, 0.4);
+}
+
+/* --- PARADOX DIAGRAM --- */
+.paradox-diagram {
+  margin: 3rem 0;
+  padding: 2.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(42, 42, 53, 0.2),
+    rgba(74, 26, 26, 0.1)
+  );
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  text-align: center;
+}
+
+.diagram-title {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: var(--glow);
+  margin-bottom: 2rem;
+  opacity: 0.7;
+}
+
+.diagram-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.diagram-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.2rem;
+  min-width: 120px;
+  max-width: 150px;
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  background: rgba(10, 10, 15, 0.6);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.diagram-node:hover {
+  border-color: rgba(255, 34, 0, 0.4);
+  box-shadow: 0 0 15px rgba(255, 34, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.diagram-node-icon {
+  font-size: 1.5rem;
+  color: var(--glow);
+  text-shadow: 0 0 10px rgba(255, 34, 0, 0.4);
+  transition: transform var(--transition-fast);
+}
+
+.diagram-node:hover .diagram-node-icon {
+  transform: scale(1.2);
+}
+
+.diagram-node-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--pale);
+  line-height: 1.6;
+}
+
+.diagram-arrow {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--blood);
+  opacity: 0.6;
+  user-select: none;
+  transition: color var(--transition-fast);
+}
+
+.diagram-arrow-loop {
+  font-size: 1.8rem;
+  color: var(--glow);
+  opacity: 0.8;
+  animation: spin 6s linear infinite;
+  text-shadow: 0 0 10px rgba(255, 34, 0, 0.4);
+}
+
+.diagram-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: var(--rust);
+  margin-top: 2rem;
+  text-transform: uppercase;
+}
+
+/* Abyss mode */
+body.abyss-mode .paradox-diagram {
+  background: rgba(42, 42, 53, 0.08);
+  border-color: rgba(139, 0, 0, 0.08);
+}
+
+body.abyss-mode .diagram-node {
+  background: rgba(10, 10, 15, 0.8);
+  border-color: rgba(139, 0, 0, 0.08);
+}
+
+body.abyss-mode .diagram-node-text {
+  color: rgba(200, 184, 168, 0.4);
+}
+
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   .section {
@@ -487,6 +686,57 @@ body.abyss-mode .glossary-def {
 
   .glossary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .corollary-item {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1.5rem 0;
+  }
+
+  .corollary-number {
+    font-size: 1.5rem;
+    min-width: auto;
+    text-align: left;
+  }
+
+  .diagram-flow {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .diagram-arrow {
+    transform: rotate(90deg);
+  }
+
+  .diagram-arrow-loop {
+    transform: none;
+  }
+
+  .diagram-node {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .paradox-diagram {
+    padding: 1.5rem;
+  }
+
+  /* Scale info default text for mobile */
+  .scale-info p {
+    font-size: 0.85rem !important;
+  }
+
+  /* Ensure scale points are easily tappable */
+  .scale-point {
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .scale-dot {
+    width: 14px;
+    height: 14px;
   }
 }
 
