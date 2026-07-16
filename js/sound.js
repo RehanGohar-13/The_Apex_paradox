@@ -81,7 +81,7 @@ function initSound() {
 
   // ── CREATE THE DRONE ─────────────────────
 
-  function createDrone() {
+  function buildDroneLayers() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     masterGain = audioCtx.createGain();
     masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
@@ -207,7 +207,7 @@ function initSound() {
   // ── FADE IN ──────────────────────────────
 
   function fadeIn(duration, volume) {
-    if (!audioCtx) createDrone();
+    if (!audioCtx) return;
 
     if (audioCtx.state === "suspended") {
       audioCtx.resume();
@@ -260,54 +260,88 @@ function initSound() {
   // ── AUTO START ───────────────────────────
 
   /**
-   * The AudioContext MUST be created directly
-   * inside a user gesture event handler.
-   * Not in a setTimeout, not in a Promise,
-   * not in an observer callback — DIRECTLY.
+   * SIMPLEST POSSIBLE APPROACH:
+   * We add a single click listener to the entire document.
+   * The FIRST click anywhere on the page after the loader
+   * finishes will start the audio.
    *
-   * Strategy: Attach a single handler that
-   * creates everything inline on first gesture.
+   * We use 'click' only because it is the most universally
+   * trusted gesture across all browsers.
    */
 
   let loaderDone = false;
+  let gestureReady = false;
 
-  function onFirstGesture() {
+  // This function runs DIRECTLY inside the click handler
+  function tryStart() {
     if (hasStarted) return;
-
-    // If loader has not finished yet just mark
-    // that we have a gesture ready and wait
     if (!loaderDone) {
       gestureReady = true;
       return;
     }
 
-    hasStarted = true;
+    // This is the critical part:
+    // AudioContext MUST be created right here
+    // inside the synchronous click handler
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      masterGain.connect(audioCtx.destination);
 
-    // CREATE AUDIO CONTEXT RIGHT HERE
-    // Inside the direct gesture handler
-    if (!audioCtx) {
-      createDrone();
+      // Build all the oscillators
+      buildDroneLayers();
+
+      // Fade in
+      masterGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 3);
+
+      isPlaying = true;
+      hasStarted = true;
+
+      const wavesEl = document.getElementById("sound-waves");
+      const muteEl = document.getElementById("sound-mute");
+      if (wavesEl) wavesEl.style.display = "";
+      if (muteEl) muteEl.style.display = "none";
+      soundBtn.classList.add("active");
+
+      // Remove listener
+      document.removeEventListener("click", tryStart, true);
+    } catch (e) {
+      console.warn("SOUND: Could not start audio —", e);
     }
+  }
 
-    if (audioCtx.state === "suspended") {
-      audioCtx.resume();
+  // Listen for first click
+  document.addEventListener("click", tryStart, true);
+
+  // Watch for loader to finish
+  const loader = document.getElementById("loader");
+
+  if (loader) {
+    const loaderObserver = new MutationObserver(() => {
+      if (loader.classList.contains("hidden") || !document.contains(loader)) {
+        loaderObserver.disconnect();
+        loaderDone = true;
+
+        // If user already clicked try now
+        if (gestureReady) {
+          // We need another click since the old one expired
+          // The next click will trigger tryStart
+        }
+      }
+    });
+
+    loaderObserver.observe(loader, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    if (loader.classList.contains("hidden")) {
+      loaderObserver.disconnect();
+      loaderDone = true;
     }
-
-    // Fade in
-    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 3);
-
-    isPlaying = true;
-
-    const wavesEl = document.getElementById("sound-waves");
-    const muteEl = document.getElementById("sound-mute");
-    if (wavesEl) wavesEl.style.display = "";
-    if (muteEl) muteEl.style.display = "none";
-    soundBtn.classList.add("active");
-
-    // Cleanup listeners
-    removeGestureListeners();
+  } else {
+    loaderDone = true;
   }
 
   let gestureReady = false;

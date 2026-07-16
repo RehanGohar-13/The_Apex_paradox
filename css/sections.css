@@ -81,8 +81,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.2rem;
-  height: 1px;
+  gap: 1rem;
+  height: auto;
+  padding: 0.5rem 0;
 }
 
 /* Left line */
@@ -92,6 +93,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--blood));
   opacity: 0.5;
+  display: block;
 }
 
 /* Right line */
@@ -101,18 +103,25 @@
   height: 1px;
   background: linear-gradient(90deg, var(--blood), transparent);
   opacity: 0.5;
+  display: block;
 }
 
-/* The diamond is now an actual element */
-.section-divider .diamond {
+/* The diamond element */
+.diamond {
   color: var(--glow);
   font-size: 0.5rem;
   opacity: 0.5;
   flex-shrink: 0;
   user-select: none;
+  line-height: 1;
+  display: inline-block;
 }
 
-/* Final divider — no diamond just a line */
+/* Final divider before footer — simple line no diamond */
+.section-divider.final-divider {
+  gap: 0;
+}
+
 .section-divider.final-divider::before {
   background: linear-gradient(90deg, transparent, var(--blood), transparent);
 }
