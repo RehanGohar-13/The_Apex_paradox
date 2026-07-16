@@ -721,23 +721,6 @@ body.abyss-mode .diagram-node-text {
   .paradox-diagram {
     padding: 1.5rem;
   }
-
-  /* Scale info default text for mobile */
-  .scale-info p {
-    font-size: 0.85rem !important;
-  }
-
-  /* Ensure scale points are easily tappable */
-  .scale-point {
-    padding: 0.5rem;
-    min-width: 44px;
-    min-height: 44px;
-  }
-
-  .scale-dot {
-    width: 14px;
-    height: 14px;
-  }
 }
 
 @media (max-width: 480px) {
