@@ -195,6 +195,22 @@
   transform: translateX(0);
 }
 
+.timeline-item:hover .timeline-label {
+  color: var(--glow);
+  text-shadow: 0 0 8px rgba(255, 34, 0, 0.3);
+}
+
+.timeline-item:hover::before {
+  background: var(--glow);
+  box-shadow:
+    0 0 12px var(--glow),
+    0 0 25px rgba(255, 34, 0, 0.3);
+}
+
+.timeline-item:hover .timeline-text {
+  color: var(--bone);
+}
+
 /* Dot on the timeline line */
 .timeline-item::before {
   content: "";
@@ -325,11 +341,28 @@
 /* --- QUESTIONS SECTION --- */
 .question-item {
   padding: 2rem 0;
-  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+  border-bottom: var(--border-subtle);
+  transition: background 0.3s ease;
 }
 
 .question-item:last-child {
   border-bottom: none;
+}
+
+.question-item:hover {
+  background: rgba(139, 0, 0, 0.02);
+}
+
+.question-item:hover .question-text {
+  color: var(--bone);
+}
+
+.question-item:hover .question-text::before {
+  text-shadow: 0 0 10px rgba(255, 34, 0, 0.5);
+}
+
+.question-item:hover .question-sub {
+  color: var(--glow);
 }
 
 /* Question text with large ? prefix */
@@ -369,32 +402,34 @@ footer {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 4rem 2rem;
-  border-top: 1px solid rgba(139, 0, 0, 0.2);
+  padding: 5rem 2rem;
+  border-top: var(--border-subtle);
 }
 
 .footer-spiral {
   font-size: 2rem;
   color: var(--glow);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   animation: spin 20s linear infinite;
   display: inline-block;
+  text-shadow: 0 0 20px rgba(255, 34, 0, 0.3);
 }
 
 .footer-text {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   color: var(--rust);
   letter-spacing: 3px;
 }
 
 .footer-quote {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--pale);
   font-style: italic;
   margin-top: 1rem;
-  opacity: 0.6;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
 }
 
 /* --- GLOSSARY --- */
@@ -481,6 +516,18 @@ body.abyss-mode .glossary-def {
 
 .corollary-item:hover {
   background: rgba(139, 0, 0, 0.03);
+  padding-left: 0.5rem;
+}
+
+.corollary-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  padding-left: 0;
+  border-bottom: var(--border-subtle);
+  transition:
+    background 0.3s ease,
+    padding-left 0.3s ease;
 }
 
 /* Large roman numeral */
@@ -549,14 +596,29 @@ body.abyss-mode .corollary-text {
 /* --- PARADOX DIAGRAM --- */
 .paradox-diagram {
   margin: 3rem 0;
-  padding: 2.5rem;
+  padding: 3rem;
   background: linear-gradient(
     135deg,
-    rgba(42, 42, 53, 0.2),
-    rgba(74, 26, 26, 0.1)
+    rgba(42, 42, 53, 0.15),
+    rgba(74, 26, 26, 0.08)
   );
-  border: 1px solid rgba(139, 0, 0, 0.15);
+  border: var(--border-subtle);
+  border-radius: 2px;
   text-align: center;
+  position: relative;
+}
+
+/* Subtle inner glow */
+.paradox-diagram::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 2px;
+  box-shadow: inset 0 0 60px rgba(139, 0, 0, 0.04);
+  pointer-events: none;
 }
 
 .diagram-title {
@@ -584,17 +646,20 @@ body.abyss-mode .corollary-text {
   padding: 1.2rem;
   min-width: 120px;
   max-width: 150px;
-  border: 1px solid rgba(139, 0, 0, 0.15);
-  background: rgba(10, 10, 15, 0.6);
+  border: var(--border-subtle);
+  background: rgba(10, 10, 15, 0.7);
+  border-radius: 2px;
   transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .diagram-node:hover {
-  border-color: rgba(255, 34, 0, 0.4);
-  box-shadow: 0 0 15px rgba(255, 34, 0, 0.08);
+  border-color: rgba(255, 34, 0, 0.35);
+  box-shadow:
+    0 4px 20px rgba(255, 34, 0, 0.06),
+    var(--shadow-glow);
   transform: translateY(-3px);
 }
 

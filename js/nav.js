@@ -113,21 +113,3 @@ const activeLinkObserver = new IntersectionObserver(
 );
 
 sections.forEach((section) => activeLinkObserver.observe(section));
-
-// ── ADD ACTIVE LINK STYLE ────────────────────
-
-/**
- * Inject the active link style directly.
- * Keeps it here so it is managed alongside the logic
- * that controls it rather than being buried in CSS.
- */
-const activeStyle = document.createElement("style");
-activeStyle.textContent = `
-    .nav-links a.active {
-        color: var(--glow);
-    }
-    .nav-links a.active::after {
-        width: 100%;
-    }
-`;
-document.head.appendChild(activeStyle);

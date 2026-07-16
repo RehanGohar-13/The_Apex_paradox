@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=1200" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Meta -->
   <title>The Apex Dilemma — A Paradox by Rehan Gohar</title>
@@ -64,6 +64,29 @@
   <link rel="stylesheet" href="css/sections.css" />
   <link rel="stylesheet" href="css/components.css" />
   <body>
+    <!-- ═══════════════════════════════════════
+         MOBILE NOTE — Desktop Recommendation
+    ═══════════════════════════════════════ -->
+    <div id="mobile-note">
+      <div class="mobile-note-content">
+        <div class="mobile-note-icon">◉</div>
+        <div class="mobile-note-title">TRANSMISSION NOTE</div>
+        <p class="mobile-note-text">
+          This paradox was designed as a desktop experience. The full
+          interaction — custom cursor, hover effects, and ambient immersion — is
+          best experienced on a larger screen.
+        </p>
+        <p class="mobile-note-sub">
+          The mobile version remains fully readable, but the intended experience
+          awaits you on desktop.
+        </p>
+        <button class="mobile-note-btn" id="mobile-note-dismiss">
+          PROCEED ANYWAY
+        </button>
+        <div class="mobile-note-skip">This message will not appear again.</div>
+      </div>
+    </div>
+
     <!-- ═══════════════════════════════════════
          LOADING SCREEN
          Controlled by: js/loader.js (coming soon)
@@ -923,6 +946,7 @@
     <script src="js/nav.js"></script>
 
     <!-- These will be added as we build features -->
+    <script src="js/mobile-note.js"></script>
     <script src="js/loader.js"></script>
     <script src="js/typewriter.js"></script>
     <script src="js/cursor.js"></script>

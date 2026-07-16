@@ -97,6 +97,17 @@ nav.scrolled {
   width: 100%;
 }
 
+/* Active state glow */
+.nav-links a.active {
+  color: var(--glow);
+}
+
+.nav-links a.active::after {
+  width: 100%;
+  background: var(--glow);
+  box-shadow: 0 0 6px rgba(255, 34, 0, 0.4);
+}
+
 /* --- HAMBURGER MENU (mobile only) --- */
 .hamburger {
   display: none;
