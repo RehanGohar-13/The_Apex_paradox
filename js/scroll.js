@@ -179,14 +179,15 @@ function updateParallax() {
 
   const scrolled = window.scrollY;
 
-  // Title moves slower — feels further away
-  heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
-  heroContent.style.opacity = 1 - scrolled / (window.innerHeight * 0.8);
+  // Title moves up and fades
+  heroContent.style.transform = `translateY(${scrolled * 0.35}px)`;
+  heroContent.style.opacity = 1 - scrolled / (window.innerHeight * 0.7);
 
-  // Scroll indicator fades faster
+  // Scroll indicator moves up FASTER so it leaves first
   const scrollIndicator = document.querySelector(".scroll-indicator");
   if (scrollIndicator) {
-    scrollIndicator.style.opacity = 1 - scrolled / (window.innerHeight * 0.3);
+    scrollIndicator.style.transform = `translateX(-50%) translateY(-${scrolled * 0.8}px)`;
+    scrollIndicator.style.opacity = 1 - scrolled / (window.innerHeight * 0.15);
   }
 }
 
@@ -253,26 +254,6 @@ function updateBackgroundShift() {
   if (canvas) {
     canvas.style.opacity = 0.15 + progress * 0.1;
   }
-
-  // Section dividers get brighter
-  const dividers = document.querySelectorAll(".section-divider");
-  const glowIntensity = 0.3 + progress * 0.7;
-  dividers.forEach((d) => {
-    d.style.background = `linear-gradient(
-            90deg,
-            transparent,
-            rgba(139, 0, 0, ${glowIntensity}),
-            transparent
-        )`;
-  });
-
-  // Update section divider diamond backgrounds
-  // so they always match the current body color
-  const diamonds = document.querySelectorAll(".section-divider");
-  const bgColor = `rgb(${r}, ${g}, ${b})`;
-  diamonds.forEach((d) => {
-    d.style.setProperty("--divider-bg", bgColor);
-  });
 }
 
 window.addEventListener("scroll", updateBackgroundShift, { passive: true });

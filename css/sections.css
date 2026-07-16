@@ -73,38 +73,56 @@
 }
 
 /* --- SECTION DIVIDER --- */
-/* The horizontal line with diamond between sections */
 .section-divider {
   width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 5%,
-    var(--blood) 50%,
-    transparent 95%
-  );
   margin: 3rem auto;
   position: relative;
   z-index: 2;
-  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  height: 1px;
 }
 
+/* Left line */
 .section-divider::before {
-  content: "◆";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--glow);
-  font-size: 0.6rem;
-  background: var(--divider-bg, var(--abyss));
-  padding: 0 1.5rem;
-  z-index: 1;
-  opacity: 0.6;
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blood));
+  opacity: 0.5;
 }
 
+/* Right line */
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blood), transparent);
+  opacity: 0.5;
+}
+
+/* The diamond is now an actual element */
+.section-divider .diamond {
+  color: var(--glow);
+  font-size: 0.5rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Final divider — no diamond just a line */
 .section-divider.final-divider::before {
-  content: none;
+  background: linear-gradient(90deg, transparent, var(--blood), transparent);
+}
+
+.section-divider.final-divider::after {
+  display: none;
+}
+
+.section-divider.final-divider .diamond {
+  display: none;
 }
 
 /* --- SPIRAL VISUAL --- */

@@ -102,34 +102,31 @@ function initScale() {
     finalPoint.style.cursor = "pointer";
 
     finalPoint.addEventListener("click", () => {
-      // Glitch the screen briefly before navigating
-      document.body.style.animation = "none";
-      document.body.style.transition = "filter 0.3s ease";
-      document.body.style.filter = "hue-rotate(90deg) brightness(2)";
+      // Immediate hard glitch then navigate
+      document.body.style.transition = "none";
+      document.body.style.filter = "invert(1) hue-rotate(180deg)";
 
       setTimeout(() => {
-        document.body.style.filter = "invert(1)";
-      }, 150);
+        document.body.style.filter = "brightness(10)";
+      }, 80);
 
       setTimeout(() => {
-        document.body.style.filter = "none";
         window.location.href = "void.html";
-      }, 400);
+      }, 160);
     });
 
-    // Also handle touch
     finalPoint.addEventListener("touchend", (e) => {
       e.preventDefault();
-      document.body.style.transition = "filter 0.3s ease";
-      document.body.style.filter = "hue-rotate(90deg) brightness(2)";
+      document.body.style.transition = "none";
+      document.body.style.filter = "invert(1) hue-rotate(180deg)";
 
       setTimeout(() => {
-        document.body.style.filter = "invert(1)";
-      }, 150);
+        document.body.style.filter = "brightness(10)";
+      }, 80);
 
       setTimeout(() => {
         window.location.href = "void.html";
-      }, 400);
+      }, 160);
     });
   }
 }
