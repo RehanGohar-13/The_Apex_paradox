@@ -34,34 +34,21 @@
 
 /* --- QUOTE BLOCK --- */
 .quote-block {
-  border-left: 2px solid rgba(255, 34, 0, 0.4);
-  padding: 1.8rem 2rem;
+  border-left: 2px solid var(--glow);
+  padding: 1.5rem 2rem;
   margin: 2.5rem 0;
-  background: linear-gradient(
-    90deg,
-    rgba(139, 0, 0, 0.06),
-    rgba(139, 0, 0, 0.02) 40%,
-    transparent 80%
-  );
+  background: linear-gradient(90deg, rgba(139, 0, 0, 0.08), transparent);
   position: relative;
   opacity: 0;
   transform: translateY(40px);
   transition:
     opacity var(--transition-slow),
-    transform var(--transition-slow),
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-  border-radius: 0 2px 2px 0;
+    transform var(--transition-slow);
 }
 
 .quote-block.visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-.quote-block:hover {
-  border-left-color: var(--glow);
-  box-shadow: -4px 0 20px rgba(255, 34, 0, 0.06);
 }
 
 .quote-block p {
@@ -72,6 +59,7 @@
   margin: 0 !important;
 }
 
+/* Animated left border glow line */
 .quote-block::before {
   content: "";
   position: absolute;
@@ -82,10 +70,6 @@
   background: var(--glow);
   box-shadow: 0 0 15px var(--glow);
   transition: height 1s ease;
-}
-
-.quote-block.visible::before {
-  height: 100%;
 }
 
 .quote-block.visible::before {
@@ -258,6 +242,112 @@
   .custom-cursor,
   .cursor-trail {
     display: none !important;
+  }
+}
+
+/* --- SOUND TOGGLE BUTTON --- */
+#sound-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 998;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(10, 10, 15, 0.85);
+  color: var(--rust);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  backdrop-filter: blur(5px);
+}
+
+#sound-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+#sound-toggle:hover {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  background: rgba(139, 0, 0, 0.1);
+}
+
+/* Active state when sound is playing */
+#sound-toggle.active {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+}
+
+/* Pulse animation when active */
+#sound-toggle.active::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  background: var(--glow);
+  border-radius: 50%;
+  animation: soundPulse 2s infinite;
+}
+
+@keyframes soundPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+}
+
+/* Sound wave bars animation when playing */
+#sound-toggle.active #sound-waves path {
+  animation: waveFlicker 3s infinite ease-in-out;
+}
+
+#sound-toggle.active #sound-waves path:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+@keyframes waveFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  #sound-toggle {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  #sound-toggle svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -592,7 +682,6 @@
   align-items: center;
   opacity: 0;
   transition: opacity 1s ease;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -624,8 +713,8 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
@@ -640,17 +729,19 @@
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 550px;
-  padding: 3rem 2rem;
+  max-width: 500px;
+  padding: 2rem;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 /* Glitch title */
 .konami-glitch-text {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-size: clamp(1.5rem, 4vw, 3rem);
   font-weight: 900;
   color: var(--glow);
-  letter-spacing: 6px;
+  letter-spacing: 5px;
   text-transform: uppercase;
   position: relative;
   animation: konamiGlitch 5s infinite;
@@ -738,36 +829,36 @@
 
 .konami-sub {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--rust);
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   margin-top: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   animation: flicker 4s infinite;
 }
 
 .konami-divider {
-  width: 60px;
+  width: 50px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--glow), transparent);
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1.5rem auto;
 }
 
 /* Messages */
 .konami-messages {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .konami-messages span {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--pale);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.6;
   opacity: 0;
   transform: translateY(8px);
   transition:
@@ -782,10 +873,10 @@
 
 /* Spiral */
 .konami-spiral {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: var(--glow);
   animation: spin 10s linear infinite;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   text-shadow: 0 0 15px rgba(255, 34, 0, 0.4);
 }
 
@@ -801,7 +892,7 @@
 
 .konami-close-text {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--rust);
   letter-spacing: 3px;
   animation: blink 2s infinite;
@@ -824,15 +915,14 @@
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgba(139, 0, 0, 0.12) 0%,
-    rgba(139, 0, 0, 0.04) 40%,
+    rgba(139, 0, 0, 0.15) 0%,
+    rgba(139, 0, 0, 0.05) 40%,
     transparent 70%
   );
-  filter: blur(80px);
+  filter: blur(60px);
   pointer-events: none;
   animation: fogDrift linear infinite alternate;
   will-change: transform;
-  opacity: 0.03;
 }
 
 @keyframes fogDrift {
@@ -860,190 +950,60 @@ body.abyss-mode .fog-layer {
   );
 }
 
-/* --- UNIFIED BUTTON SYSTEM --- */
-/* All fixed buttons share the same base style */
-.fixed-btn {
-  position: fixed;
-  z-index: 998;
-  width: 42px;
-  height: 42px;
-  border: var(--border-subtle);
-  background: rgba(10, 10, 15, 0.9);
-  color: var(--rust);
-  border-radius: 3px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition:
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease,
-    transform 0.25s ease;
-  backdrop-filter: blur(8px);
-}
-
-.fixed-btn svg {
-  width: 18px;
-  height: 18px;
-  display: block;
-}
-
-.fixed-btn:hover {
-  border-color: var(--glow);
-  color: var(--glow);
-  box-shadow: var(--shadow-glow);
-  background: rgba(139, 0, 0, 0.08);
-  transform: translateY(-1px);
-}
-
-.fixed-btn:active {
-  transform: translateY(0) scale(0.97);
-}
-
-.fixed-btn.active {
-  border-color: var(--glow);
-  color: var(--glow);
-  box-shadow: var(--shadow-glow);
-}
-
-/* --- SOUND TOGGLE --- */
-#sound-toggle {
-  bottom: 2rem;
-  right: 2rem;
-}
-
-#sound-toggle.active::after {
-  content: "";
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 7px;
-  height: 7px;
-  background: var(--glow);
-  border-radius: 50%;
-  animation: soundPulse 2s infinite;
-}
-
-@keyframes soundPulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(0.6);
-  }
-}
-
-#sound-toggle.active #sound-waves path {
-  animation: waveFlicker 3s infinite ease-in-out;
-}
-
-#sound-toggle.active #sound-waves path:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-@keyframes waveFlicker {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  30% {
-    opacity: 0.3;
-  }
-  60% {
-    opacity: 0.8;
-  }
-}
-
-/* --- ABYSS MODE TOGGLE --- */
+/* --- ABYSS MODE TOGGLE BUTTON --- */
 #abyss-toggle {
+  position: fixed;
   bottom: 2rem;
   left: 5.5rem;
-}
-
-/* --- AUTHOR TOGGLE --- */
-.author-panel {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
   z-index: 998;
-}
-
-.author-toggle {
-  width: 42px;
-  height: 42px;
-  border: var(--border-subtle);
-  background: rgba(10, 10, 15, 0.9);
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(10, 10, 15, 0.85);
   color: var(--rust);
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   transition:
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease,
-    transform 0.25s ease;
-  backdrop-filter: blur(8px);
-  position: relative;
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  backdrop-filter: blur(5px);
 }
 
-.author-toggle span {
-  font-style: italic;
+#abyss-toggle svg {
+  width: 18px;
+  height: 18px;
 }
 
-.author-toggle:hover {
+#abyss-toggle:hover {
   border-color: var(--glow);
   color: var(--glow);
-  box-shadow: var(--shadow-glow);
-  background: rgba(139, 0, 0, 0.08);
-  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
+  background: rgba(139, 0, 0, 0.1);
 }
 
-.author-toggle:active {
-  transform: translateY(0) scale(0.97);
+#abyss-toggle.active {
+  border-color: var(--glow);
+  color: var(--glow);
+  box-shadow: 0 0 12px rgba(255, 34, 0, 0.2);
 }
 
 @media (max-width: 768px) {
-  .fixed-btn {
-    width: 38px;
-    height: 38px;
-  }
-
-  .fixed-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  #sound-toggle {
-    bottom: 1.5rem;
-    right: 1.5rem;
-  }
-
   #abyss-toggle {
     bottom: 1.5rem;
-    left: 4.5rem;
+    left: 5rem;
+    width: 40px;
+    height: 40px;
   }
 
-  .author-panel {
-    bottom: 1.5rem;
-    left: 1.5rem;
-  }
-
-  .author-toggle {
-    width: 38px;
-    height: 38px;
+  #abyss-toggle svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -1297,6 +1257,80 @@ body.abyss-mode .fog-layer {
   }
 }
 
+/* --- MOBILE TOUCH STATES --- */
+/* These replace hover effects on touch devices */
+
+/* Active scale point on mobile */
+.scale-point.mobile-active .scale-dot {
+  background: var(--glow);
+  border-color: var(--glow);
+  box-shadow:
+    0 0 12px var(--glow),
+    0 0 25px rgba(255, 34, 0, 0.3);
+  transform: scale(1.4);
+}
+
+.scale-point.mobile-active .scale-label {
+  color: var(--glow);
+}
+
+/* Active glossary item on mobile */
+.glossary-item.mobile-active {
+  border-color: rgba(255, 34, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 34, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Active corollary on mobile */
+.corollary-item.mobile-active {
+  background: rgba(139, 0, 0, 0.03);
+}
+
+.corollary-item.mobile-active .corollary-number {
+  opacity: 0.7;
+}
+
+.corollary-item.mobile-active .corollary-title {
+  color: var(--glow);
+}
+
+/* Diagram node pulse on tap */
+.diagram-node.mobile-pulse {
+  border-color: rgba(255, 34, 0, 0.4) !important;
+  box-shadow: 0 0 15px rgba(255, 34, 0, 0.08) !important;
+  transform: translateY(-3px) !important;
+}
+
+.diagram-node.mobile-pulse .diagram-node-icon {
+  transform: scale(1.2);
+}
+
+/* Active comparison card on mobile */
+.comparison-card.mobile-active {
+  transform: translateY(-4px);
+}
+
+.comparison-card.order.mobile-active {
+  box-shadow: 0 8px 30px rgba(200, 184, 168, 0.08);
+}
+
+.comparison-card.chaos.mobile-active {
+  box-shadow: 0 8px 30px rgba(255, 34, 0, 0.1);
+}
+
+/* Mobile-specific layout adjustments */
+body.is-mobile .scale-info p {
+  font-size: 0.85rem !important;
+}
+
+/* Ensure buttons look tappable on mobile */
+body.is-mobile #sound-toggle,
+body.is-mobile #abyss-toggle,
+body.is-mobile .author-toggle {
+  min-width: 44px;
+  min-height: 44px;
+}
+
 /* --- MOBILE RECOMMENDATION NOTE --- */
 #mobile-note {
   display: none;
@@ -1327,7 +1361,7 @@ body.abyss-mode .fog-layer {
 
 .mobile-note-title {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: 0.75rem;
   color: var(--glow);
   letter-spacing: 5px;
   margin-bottom: 1.5rem;
@@ -1354,23 +1388,22 @@ body.abyss-mode .fog-layer {
 
 .mobile-note-btn {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: 0.75rem;
   color: var(--glow);
   letter-spacing: 4px;
   background: transparent;
-  border: var(--border-medium);
+  border: 1px solid rgba(139, 0, 0, 0.3);
   padding: 0.8rem 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-block;
-  border-radius: 2px;
 }
 
 .mobile-note-btn:hover,
 .mobile-note-btn:active {
   background: rgba(255, 34, 0, 0.08);
   border-color: var(--glow);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 0 15px rgba(255, 34, 0, 0.15);
 }
 
 .mobile-note-skip {
@@ -1382,7 +1415,6 @@ body.abyss-mode .fog-layer {
   opacity: 0.5;
 }
 
-/* Only show on mobile/tablet */
 @media (max-width: 1024px) {
   #mobile-note {
     display: flex;
