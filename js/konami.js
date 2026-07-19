@@ -65,20 +65,19 @@ function triggerAbyss() {
   overlay.innerHTML = `
         <div class="konami-content">
             <div class="konami-glitch-text" data-text="YOU FOUND IT">YOU FOUND IT</div>
-            <div class="konami-sub">BUT WHAT DID YOU EXPECT TO FIND?</div>
+            <div class="konami-sub">BUT FINDING IS NOT THE SAME AS UNDERSTANDING</div>
             <div class="konami-divider"></div>
             <div class="konami-messages">
-                <span>The Abyss has many doors.</span>
-                <span>You just opened one.</span>
-                <span>Not all doors lead somewhere.</span>
-                <span>Some doors lead to the thing that watches through them.</span>
-                <span>It sees you now.</span>
-                <span>Close your eyes.</span>
-                <span>It doesn't help.</span>
+                <span>There are doors in this paradox that were never meant to be opened.</span>
+                <span>You typed a sequence. A ritual. A key.</span>
+                <span>The machine noticed.</span>
+                <span>It does not reward curiosity.</span>
+                <span>It catalogues it.</span>
+                <span>You are now part of the data.</span>
             </div>
             <div class="konami-spiral">◉</div>
             <div class="konami-close">
-                <span class="konami-close-text">[PRESS ESCAPE TO CLOSE YOUR EYES]</span>
+                <span class="konami-close-text">[PRESS ESCAPE TO LOOK AWAY]</span>
             </div>
         </div>
     `;
